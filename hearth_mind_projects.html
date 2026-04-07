@@ -72,35 +72,69 @@
 
     <!-- Navigator -->
     <section class="panel border-green-500/40" style="background: linear-gradient(145deg, rgba(15,23,42,.9), rgba(20,83,45,.3)); border-color: rgba(34,197,94,.4);">
-      <div class="flex items-center gap-3 mb-4">
+      <div class="flex items-center gap-3 mb-2">
         <h2 class="text-2xl text-green-300">Navigator — Benefits Assistance System</h2>
       </div>
-      <p class="text-slate-200 mb-4">A trauma-informed guide through disability benefits, resources, and the application process. No judgment. Real help. Currently operational.</p>
-      
-      <div class="grid md:grid-cols-3 gap-4 mb-4">
-        <div class="rounded-lg overflow-hidden border border-slate-700">
-          <img src="/screenshots/navigator_main.jpg" alt="Navigator main page" class="w-full h-auto">
-          <p class="text-xs text-slate-400 p-2 bg-slate-800/50">Landing — four guided paths</p>
+      <p class="text-slate-200 mb-2">A trauma-informed guide through disability benefits, resources, and the application process. No judgment. Real help. Currently operational.</p>
+      <p class="text-slate-400 text-sm mb-6">Navigator comes in three faces — meet people where they are, on any device, in any context.</p>
+
+      <!-- Navigator: Web -->
+      <div class="mb-8">
+        <h3 class="text-lg text-green-200 mb-1">Navigator: Web</h3>
+        <p class="text-slate-300 text-sm mb-3">Stateless. No account. No data stored. Type what you need — get matched to programs, send results to your caseworker. Works on any browser, anywhere.</p>
+        <div class="rounded-lg overflow-hidden border border-slate-700 mb-1">
+          <img src="/screenshots/navigatorweb.png" alt="Navigator Web — discovery interface" class="w-full h-auto">
         </div>
-        <div class="rounded-lg overflow-hidden border border-slate-700">
-          <img src="/screenshots/navigator_checklist.jpg" alt="Navigator checklist" class="w-full h-auto">
-          <p class="text-xs text-slate-400 p-2 bg-slate-800/50">Document tracker — progress stays local</p>
-        </div>
-        <div class="rounded-lg overflow-hidden border border-slate-700">
-          <img src="/screenshots/navigator_timeline.jpg" alt="Navigator timeline" class="w-full h-auto">
-          <p class="text-xs text-slate-400 p-2 bg-slate-800/50">Timeline — honest about the process</p>
+        <p class="text-xs text-slate-500">Discover tab — real-time program matching with match confidence, local office info, and one-tap send to caseworker</p>
+      </div>
+
+      <!-- Navigator: Home -->
+      <div class="mb-8">
+        <h3 class="text-lg text-green-200 mb-1">Navigator: Home</h3>
+        <p class="text-slate-300 text-sm mb-3">Local-first. Everything saved on your device — never on our servers. Persistent checklist, document understanding, deadline tracking, and a caseworker connection you control.</p>
+        <div class="grid md:grid-cols-3 gap-3 mb-1">
+          <div class="rounded-lg overflow-hidden border border-slate-700">
+            <img src="/screenshots/navigatorhomediscover.png" alt="Navigator Home — discover tab" class="w-full h-auto">
+            <p class="text-xs text-slate-500 p-2 bg-slate-800/50">Discover — program matching with your profile</p>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-slate-700">
+            <img src="/screenshots/navigatorhomeconnections.png" alt="Navigator Home — connections tab" class="w-full h-auto">
+            <p class="text-xs text-slate-500 p-2 bg-slate-800/50">Connections — your caseworker, your terms</p>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-slate-700">
+            <img src="/screenshots/navigatorhomesaved.png" alt="Navigator Home — saved tab" class="w-full h-auto">
+            <p class="text-xs text-slate-500 p-2 bg-slate-800/50">Saved — programs and documents, local only</p>
+          </div>
         </div>
       </div>
 
-      <ul class="list-disc list-inside text-slate-300 space-y-1 mb-6">
-        <li><strong>Benefits Guide:</strong> SSDI, SSI, SNAP, Medicaid — who qualifies, what you need</li>
-        <li><strong>Local Resources:</strong> Location-based help (211, food banks, VA services, crisis lines)</li>
-        <li><strong>Privacy-first:</strong> Checklist saves in browser only — nothing leaves your device</li>
-        <li><strong>Trauma-informed copy:</strong> "Most people get denied the first time. That's normal, not personal."</li>
+      <!-- Navigator: Field -->
+      <div class="mb-8">
+        <h3 class="text-lg text-green-200 mb-1">Navigator: Field</h3>
+        <p class="text-slate-300 text-sm mb-3">The caseworker-facing professional interface. Client-controlled sharing — caseworkers only see what clients choose to send. Full activity log, credential-gated protected documents, and a complete audit trail attributed to caseworker ID.</p>
+        <div class="grid md:grid-cols-2 gap-3 mb-1">
+          <div class="rounded-lg overflow-hidden border border-slate-700">
+            <img src="/screenshots/navigatorprodocuments.png" alt="Navigator Field — documents tab" class="w-full h-auto">
+            <p class="text-xs text-slate-500 p-2 bg-slate-800/50">Documents — received files + credential-gated protected section</p>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-slate-700">
+            <img src="/screenshots/navigatorproactivitylog.png" alt="Navigator Field — activity log" class="w-full h-auto">
+            <p class="text-xs text-slate-500 p-2 bg-slate-800/50">Activity log — every action attributed to caseworker ID</p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="list-disc list-inside text-slate-300 space-y-1 mb-6 text-sm">
+        <li><strong>Benefits matching:</strong> SSDI, SSI, SNAP, Medicaid, HEN, ERAP — 1,276+ SAM.gov programs</li>
+        <li><strong>Privacy-first:</strong> Web is fully stateless. Home never leaves your device. Field is pull-only — clients control every send.</li>
+        <li><strong>Trauma-informed:</strong> "Most people get denied the first time. That's normal, not personal."</li>
+        <li><strong>AI-powered:</strong> Azure OpenAI GPT-4o for document understanding, program matching, and plain-language explanation</li>
       </ul>
 
-      <div class="rounded-lg overflow-hidden border border-slate-700">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/cig1NeaZQyA" title="Navigator Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen class="w-full aspect-video"></iframe>
+      <!-- OVH Infrastructure -->
+      <div class="bg-slate-800/40 rounded-lg p-4 border border-slate-600/40 flex items-center gap-4">
+        <img src="/screenshots/ovh for startups.png" alt="OVH for Startups" class="h-10 object-contain flex-shrink-0">
+        <p class="text-slate-400 text-sm">Navigator is deployed on OVH Cloud infrastructure through the OVH for Startups program.</p>
       </div>
     </section>
 
