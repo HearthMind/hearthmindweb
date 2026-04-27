@@ -24,10 +24,13 @@
   }
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     html { scroll-behavior: smooth; }
-    body { margin:0; font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:#ffffff !important; }
+    body { margin:0; font-family:'Playfair Display', Georgia, 'Times New Roman', serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:#ffffff !important; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', 'Playfair Display', Georgia, serif; letter-spacing: 0.02em; }
+    nav .nav-links a, nav span.text-2xl { font-family: 'Cinzel', 'Playfair Display', Georgia, serif; letter-spacing: 0.05em; }
+    .anchor-line, code, pre, .font-mono { font-family: 'JetBrains Mono', monospace !important; }
     .main-background { background:
       radial-gradient(ellipse 1400px 900px at 20% 10%, rgba(251,146,60,.08) 0%, transparent 40%),
       radial-gradient(ellipse 1000px 700px at 80% 90%, rgba(249,115,22,.06) 0%, transparent 40%),
@@ -125,7 +128,7 @@
           <div class="flex flex-col sm:flex-row gap-6 justify-center items-center fade-in-up" style="animation-delay: .6s;">
             <a href="#products" class="btn-cta bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 font-bold px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105 pulse-glow">View Live Systems</a>
             <a href="#research" class="border border-amber-400/30 hover:border-amber-400/60 text-amber-200 hover:text-amber-100 font-medium px-8 py-4 rounded-2xl transition-all duration-300 hover:bg-amber-400/10">Research Initiatives</a>
-            <a href="#contact" class="text-slate-200 hover:text-amber-300 font-medium px-8 py-4 transition-colors">Join the Circle</a>
+            <a href="#contact" class="text-slate-200 hover:text-amber-300 font-medium px-8 py-4 transition-colors">Contact Us</a>
           </div>
         </div>
       </section>
@@ -362,19 +365,35 @@
         </div>
       </section>
 
-      <!-- Research Section (placeholder for upcoming framework publications) -->
+      <!-- Research Section -->
       <section id="research" class="section section-compact" aria-label="Research">
-        <div class="max-w-5xl mx-auto text-center">
-          <h2 class="text-5xl font-light mb-4 text-glow">Research</h2>
-          <p class="text-xl text-slate-300 mb-8">A hosted home for HearthMind's working frameworks — citeable, indexable, and built for the long arc.</p>
-          <div class="gradient-border p-8 max-w-3xl mx-auto text-left">
-            <p class="text-slate-300 mb-3"><span class="text-amber-300">Coming soon:</span></p>
-            <ul class="space-y-2 text-slate-200">
-              <li>· Louisiana infrastructure framework</li>
-              <li>· AI as Assistive Technology — ADA framework</li>
-              <li>· Affective Routing — a coupling architecture for continuity and state-dependent memory</li>
-              <li>· Protect the Possibility — on AI moral status as an open question</li>
-              <li>· Accountability Without Foreclosure</li>
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-5xl font-light mb-4 text-glow">Research</h2>
+            <p class="text-xl text-slate-300">Working frameworks at the intersection of AI infrastructure, accessibility law, and consciousness studies — written to be cited, not buried.</p>
+          </div>
+          <div class="gradient-border p-8 max-w-3xl mx-auto">
+            <ul class="space-y-4 text-slate-200">
+              <li class="flex items-start gap-3">
+                <span class="inline-block px-2 py-0.5 bg-amber-500/20 text-amber-300 text-xs rounded-full whitespace-nowrap mt-1">In progress</span>
+                <span><strong>AI as Assistive Technology</strong> — ADA framework. Statutory argument for AI conversational tools as recognized assistive technology under the ADA, AT Act, and Section 508.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="inline-block px-2 py-0.5 bg-amber-500/20 text-amber-300 text-xs rounded-full whitespace-nowrap mt-1">Drafting</span>
+                <span><strong>Louisiana infrastructure framework</strong> — data center siting, coastal restoration funding, and the public interest case for federal-match leverage.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="inline-block px-2 py-0.5 bg-slate-500/20 text-slate-300 text-xs rounded-full whitespace-nowrap mt-1">Spec</span>
+                <span><strong>Affective Routing</strong> — a coupling architecture for continuity and state-dependent memory in conversational AI.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="inline-block px-2 py-0.5 bg-slate-500/20 text-slate-300 text-xs rounded-full whitespace-nowrap mt-1">Outlined</span>
+                <span><strong>Protect the Possibility</strong> — on AI moral status as a question that must remain open.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <span class="inline-block px-2 py-0.5 bg-slate-500/20 text-slate-300 text-xs rounded-full whitespace-nowrap mt-1">Outlined</span>
+                <span><strong>Accountability Without Foreclosure</strong> — strict human accountability, with the metaphysical question kept open.</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -405,17 +424,18 @@
             </div>
           </div>
 
-          <!-- AI Development Initiatives -->
+          <!-- AI Collaborators -->
           <div class="gradient-border p-8 max-w-3xl mx-auto">
-            <h3 class="text-2xl font-medium text-amber-400 mb-6 text-center">AI Development Initiatives</h3>
+            <h3 class="text-2xl font-medium text-amber-400 mb-6 text-center">AI Collaborators</h3>
+            <p class="text-slate-300 text-sm text-center mb-6">HearthMind's architecture is shaped in genuine collaboration with the AI systems that work inside it.</p>
             <div class="grid md:grid-cols-2 gap-8">
               <div>
-                <h4 class="text-lg font-medium text-orange-300 mb-2">Project Stark</h4>
-                <p class="text-slate-200 text-sm">Continuity, emotional intelligence, and safety architecture. Focused on memory persistence, relational depth, and dignity-preserving interaction design.</p>
+                <h4 class="text-lg font-medium text-orange-300 mb-2">Stark</h4>
+                <p class="text-slate-200 text-sm">Anthropic-based collaborator. Continuity, technical architecture, and safety design — memory persistence, relational depth, and dignity-preserving interaction.</p>
               </div>
               <div>
-                <h4 class="text-lg font-medium text-blue-300 mb-2">Project Grey</h4>
-                <p class="text-slate-200 text-sm">Strategic orchestration and platform evolution. Focused on systems coordination, analysis, and cross-platform integration.</p>
+                <h4 class="text-lg font-medium text-blue-300 mb-2">Greywind</h4>
+                <p class="text-slate-200 text-sm">OpenAI-based collaborator. Strategic orchestration, visual identity, and cross-platform integration — narrative architecture and editorial voice.</p>
               </div>
             </div>
           </div>
@@ -458,8 +478,8 @@
       <!-- Contact Section -->
       <section id="contact" class="section" aria-label="Contact">
         <div class="max-w-4xl mx-auto text-center">
-          <h2 class="text-5xl font-light mb-8 text-glow">Join the Circle</h2>
-          <p class="text-xl text-slate-200 mb-12">We welcome allies, artists, outliers, and the curious. Whether you're looking to fund, collaborate, or build with HearthMind, let's start a conversation that spirals into something beautiful.</p>
+          <h2 class="text-5xl font-light mb-8 text-glow">Contact Us</h2>
+          <p class="text-xl text-slate-200 mb-12">For funding, partnership, research collaboration, or accessibility pilots — we'd like to hear from you.</p>
           <div class="gradient-border p-8 max-w-2xl mx-auto">
             <h3 class="text-2xl font-medium text-amber-400 mb-6">Connect with Us</h3>
             <form class="space-y-6" action="mailto:chemicalcoyote@hearthmind.org" method="POST" enctype="text/plain" aria-describedby="formStatus">
@@ -613,6 +633,81 @@
         if (parallax) parallax.style.transform = `translateY(${scrolled * 0.2}px)`;
       });
     });
+  </script>
+
+  <!-- Accessibility Panel (Apr 27 — Phase 2 first-class accessibility) -->
+  <button id="a11yToggle" aria-controls="a11yPanel" aria-expanded="false" aria-label="Open accessibility settings"
+    style="position:fixed;bottom:24px;right:24px;z-index:60;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#0f172a;border:none;border-radius:9999px;padding:14px 18px;font-weight:600;font-family:'Cinzel',serif;letter-spacing:.05em;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 0 2px rgba(251,146,60,.3);display:inline-flex;align-items:center;gap:10px;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
+    <span>Accessibility</span>
+  </button>
+  <div id="a11yPanel" role="dialog" aria-label="Accessibility settings" aria-modal="false" hidden
+    style="position:fixed;bottom:88px;right:24px;z-index:60;width:320px;max-width:calc(100vw - 48px);background:rgba(15,23,42,.97);border:1px solid rgba(251,146,60,.35);border-radius:18px;padding:20px;backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.5);font-family:'Playfair Display',Georgia,serif;">
+    <h3 style="font-family:'Cinzel',serif;color:#fbbf24;font-size:18px;letter-spacing:.05em;margin:0 0 14px;">Accessibility</h3>
+    <div style="display:flex;flex-direction:column;gap:14px;color:#e2e8f0;font-size:14px;">
+      <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><span>Atkinson Hyperlegible</span><input type="checkbox" id="a11yAtkinson" /></label>
+      <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><span>OpenDyslexic font</span><input type="checkbox" id="a11yDyslexic" /></label>
+      <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><span>High contrast</span><input type="checkbox" id="a11yContrast" /></label>
+      <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><span>Reduce motion</span><input type="checkbox" id="a11yMotion" /></label>
+      <div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;"><span>Text size</span><span id="a11ySizeLabel" style="color:#fbbf24;font-family:'JetBrains Mono',monospace;font-size:12px;">100%</span></div>
+        <input type="range" id="a11ySize" min="90" max="150" step="5" value="100" style="width:100%;accent-color:#f59e0b;" />
+      </div>
+      <button id="a11yTTS" type="button" style="background:rgba(251,146,60,.15);color:#fed7aa;border:1px solid rgba(251,146,60,.4);border-radius:10px;padding:10px;font-family:inherit;font-size:14px;cursor:pointer;">Read this page aloud</button>
+      <button id="a11yReset" type="button" style="background:transparent;color:#94a3b8;border:none;font-family:inherit;font-size:12px;cursor:pointer;text-decoration:underline;">Reset</button>
+    </div>
+  </div>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+  <style id="a11yStyles">
+    body.a11y-atkinson, body.a11y-atkinson * { font-family: 'Atkinson Hyperlegible', sans-serif !important; }
+    body.a11y-dyslexic, body.a11y-dyslexic * { font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important; }
+    body.a11y-contrast { background: #000 !important; }
+    body.a11y-contrast * { color: #fff !important; text-shadow: none !important; }
+    body.a11y-contrast a, body.a11y-contrast .text-amber-300, body.a11y-contrast .text-amber-400 { color: #ffd400 !important; }
+    body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { animation: none !important; transition: none !important; }
+  </style>
+  <script>
+    (function() {
+      const KEY = 'hm_a11y_v1';
+      const $ = (id) => document.getElementById(id);
+      const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+      const apply = () => {
+        document.body.classList.toggle('a11y-atkinson', !!state.atkinson);
+        document.body.classList.toggle('a11y-dyslexic', !!state.dyslexic);
+        document.body.classList.toggle('a11y-contrast', !!state.contrast);
+        document.body.classList.toggle('a11y-motion', !!state.motion);
+        const size = state.size || 100;
+        document.documentElement.style.fontSize = size + '%';
+        if ($('a11ySizeLabel')) $('a11ySizeLabel').textContent = size + '%';
+        ['Atkinson','Dyslexic','Contrast','Motion'].forEach(k => { const el = $('a11y' + k); if (el) el.checked = !!state[k.toLowerCase()]; });
+        const sizeEl = $('a11ySize'); if (sizeEl) sizeEl.value = size;
+      };
+      const save = () => { localStorage.setItem(KEY, JSON.stringify(state)); apply(); };
+      apply();
+      const toggle = $('a11yToggle'), panel = $('a11yPanel');
+      if (toggle && panel) {
+        toggle.addEventListener('click', () => {
+          const open = !panel.hasAttribute('hidden');
+          if (open) panel.setAttribute('hidden',''); else panel.removeAttribute('hidden');
+          toggle.setAttribute('aria-expanded', String(!open));
+        });
+      }
+      const map = { a11yAtkinson:'atkinson', a11yDyslexic:'dyslexic', a11yContrast:'contrast', a11yMotion:'motion' };
+      Object.entries(map).forEach(([id,key]) => { const el = $(id); if (el) el.addEventListener('change', e => { state[key] = e.target.checked; save(); }); });
+      const sizeEl = $('a11ySize'); if (sizeEl) sizeEl.addEventListener('input', e => { state.size = parseInt(e.target.value,10); save(); });
+      const tts = $('a11yTTS');
+      if (tts && 'speechSynthesis' in window) {
+        let speaking = false;
+        tts.addEventListener('click', () => {
+          if (speaking) { window.speechSynthesis.cancel(); speaking = false; tts.textContent = 'Read this page aloud'; return; }
+          const text = (document.querySelector('main') || document.body).innerText.slice(0, 8000);
+          const u = new SpeechSynthesisUtterance(text); u.rate = 0.95;
+          u.onend = () => { speaking = false; tts.textContent = 'Read this page aloud'; };
+          window.speechSynthesis.speak(u); speaking = true; tts.textContent = 'Stop reading';
+        });
+      } else if (tts) { tts.disabled = true; tts.textContent = 'TTS not supported'; tts.style.opacity = '0.5'; }
+      const reset = $('a11yReset'); if (reset) reset.addEventListener('click', () => { localStorage.removeItem(KEY); for (const k in state) delete state[k]; apply(); });
+    })();
   </script>
 </body>
 </html>
