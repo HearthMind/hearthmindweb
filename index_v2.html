@@ -47,24 +47,37 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  background: var(--ground-base) url('assets/brand/hearthmind_frontispiece_scene.png') center center / cover no-repeat;
-  background-attachment: fixed;
+  background-color: var(--ground-base);
   color: var(--hm-linen);
   font-family: var(--type-body);
   font-size: 18px;
   line-height: 1.6;
   min-height: 100vh;
 }
-/* Soft veil over the frontispiece so text remains readable on every screen size */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(13,19,33,0.10) 0%, rgba(13,19,33,0.35) 60%, rgba(13,19,33,0.55) 100%);
-  pointer-events: none;
+/* Frontispiece image sits as a top-pinned, full-width element so nothing crops.
+   Aspect ratio = 1535 / 1024 ≈ 1.499 (we round to 3:2 for the box).
+   Width = 100vw, height = auto, page extends naturally. */
+.frontispiece-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   z-index: 0;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
-.page-frame { position: relative; z-index: 1; }
+/* Soft veil for legibility over the painted scene */
+.frontispiece-veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(13,19,33,0.05) 0%, rgba(13,19,33,0.20) 60%, rgba(13,19,33,0.40) 100%);
+}
+.page-frame { position: relative; z-index: 2; }
 
 h1, h2, h3, h4, h5, h6, .display { font-family: var(--type-display); letter-spacing: 0.04em; font-weight: 500; }
 
@@ -85,14 +98,17 @@ button { font-family: inherit; cursor: pointer; }
 .page-frame {
   position: relative;
   min-height: 100vh;
-  padding: var(--frame-padding);
+  padding: 32px 48px;
   display: flex;
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
-  .page-frame { padding: var(--frame-padding-mobile); }
+@media (max-width: 900px) {
+  .page-frame { padding: 16px 20px; }
 }
+
+/* Match the page-frame width to the natural width of the image so content
+   aligns with the painted frames inside. The image's aspect ratio holds it. */
 
 /* Hairline frame — fallback / structural cue. Grey's frame PNG sits on top via the body bg. */
 /* The engraved frame lives in Grey's frontispiece scene image. No CSS frame needed. */
@@ -640,6 +656,9 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 
 <a href="#main" class="skip-link">Skip to content</a>
 
+<img class="frontispiece-bg" id="frontispieceBg" src="assets/brand/hearthmind_frontispiece_scene.png" alt="" aria-hidden="true" />
+<div class="frontispiece-veil" id="frontispieceVeil" aria-hidden="true"></div>
+
 <div class="page-frame">
 
   <!-- ============= TOP NAVIGATION ============= -->
@@ -913,5 +932,22 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.clas
   const reset = $('a11yReset'); if (reset) reset.addEventListener('click', () => { localStorage.removeItem(KEY); for (const k in state) delete state[k]; apply(); });
 })();
 </script>
+
+<script>
+// Size the frontispiece veil to match the image's rendered height
+(function() {
+  const img = document.getElementById('frontispieceBg');
+  const veil = document.getElementById('frontispieceVeil');
+  if (!img || !veil) return;
+  function syncVeil() {
+    const h = img.offsetHeight;
+    if (h > 0) veil.style.height = h + 'px';
+  }
+  img.addEventListener('load', syncVeil);
+  window.addEventListener('resize', syncVeil);
+  if (img.complete) syncVeil();
+})();
+</script>
+
 </body>
 </html>
