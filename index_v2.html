@@ -8,264 +8,145 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
 
 <style>
 :root {
   --hm-midnight: #0D1321;
-  --hm-deep-teal: #0B3D4D;
   --hm-flame: #FF6A00;
   --hm-gold: #D4A017;
   --hm-linen: #C7C2BB;
-  --engraving-primary: rgba(212, 160, 23, 0.85);
-  --engraving-secondary: rgba(212, 160, 23, 0.45);
-  --engraving-faint: rgba(212, 160, 23, 0.22);
-  --ground: #0D1321;
+  --gold-soft: rgba(212, 160, 23, 0.85);
+  --gold-faint: rgba(212, 160, 23, 0.45);
   --type-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
   --type-body: 'Playfair Display', Georgia, serif;
 }
-
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
-  background: var(--ground) url('assets/brand/hearthmind_frontispiece_scene.png') top center / cover no-repeat;
+  background: var(--hm-midnight);
   color: var(--hm-linen);
   font-family: var(--type-body);
   font-size: 18px;
   line-height: 1.6;
   min-height: 100vh;
 }
-
-/* Frame is the TOP layer — sits over everything as decorative edge.
-   Image is 2048x1366 (3:2). Pinned to viewport, fixed-position so it
-   acts as a window-frame around the scrollable content. */
-.page-frame-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;                    /* FIXED: was 100, was covering content */
-  background-image: url('assets/brand/frame_outer.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-}
-
-/* Soft veil for legibility over the scene */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  background: linear-gradient(180deg,
-    rgba(13,19,33,0.10) 0%,
-    rgba(13,19,33,0.30) 60%,
-    rgba(13,19,33,0.55) 100%);
-}
-
 a { color: var(--hm-gold); text-decoration: none; transition: color 0.2s; }
 a:hover, a:focus { color: var(--hm-flame); outline: none; }
 a:focus-visible { outline: 2px solid var(--hm-flame); outline-offset: 4px; }
 button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--hm-flame); color: var(--hm-midnight); }
 
-h1, h2, h3, h4, h5, h6 { font-family: var(--type-display); letter-spacing: 0.04em; font-weight: 500; }
-
-/* ===== Page container — sits inside the visible frame area ===== */
-.page {
+/* ===================================================================
+   FRONTISPIECE — image + anchored content sharing one coordinate system
+   Coordinates locked from anchor tool (Robin, Apr 27 2026)
+   =================================================================== */
+.frontispiece {
   position: relative;
-  z-index: 2;
-  max-width: 1400px;
+  width: 100%;
+  max-width: 1700px;
   margin: 0 auto;
-  padding: 80px 100px 100px;   /* keeps content inside the frame's painted edge */
-  min-height: 100vh;
+  aspect-ratio: 1535 / 1024;
+  background: var(--hm-midnight) url('assets/brand/hearthmind_frontispiece_scene.png') center/contain no-repeat;
 }
 
-@media (max-width: 900px) { .page { padding: 60px 40px 60px; } }
-@media (max-width: 600px) { .page { padding: 40px 24px 40px; } }
+.fp-anchor { position: absolute; }
 
-/* ===== TOP NAV ===== */
-.top-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--type-display);
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--engraving-primary);
-  margin-bottom: 48px;
-}
-.top-nav .nav-group { display: flex; gap: 36px; }
-.top-nav a { color: var(--engraving-primary); text-shadow: 0 2px 4px rgba(0,0,0,0.6); }
-.top-nav a:hover { color: var(--hm-flame); }
-.top-nav .nav-spacer { width: 60px; }   /* gap for the painted compass ornament center */
+/* === LOCKED COORDINATES (from anchor tool export) === */
+.fp-nav-left    { left: 9.6%;    top: 3.3%;    width: 38.4%;    height: 3.6%; }
+.fp-nav-right   { left: 52.0%;   top: 3.2%;   width: 40.0%;   height: 4.0%; }
+.fp-wordmark    { left: 38.7%;    top: 31.0%;    width: 23.6%;    height: 11.8%; }
+.fp-tagline     { left: 36.3%;     top: 43.8%;     width: 27.6%;     height: 7.4%; }
+.fp-rail-left   { left: 2.5%;   top: 7.6%;   width: 10.9%;   height: 61.3%; }
+.fp-rail-right  { left: 87.5%;  top: 11.9%;  width: 9.0%;  height: 64.6%; }
+.fp-card-1      { left: 18.7%;      top: 56.5%;      width: 14.1%;      height: 19.9%; }
+.fp-card-2      { left: 33.9%;      top: 56.2%;      width: 15.0%;      height: 20.8%; }
+.fp-card-3      { left: 50.2%;      top: 56.7%;      width: 13.9%;      height: 19.6%; }
+.fp-card-4      { left: 66.1%;      top: 55.7%;      width: 14.3%;      height: 21.7%; }
+.fp-quote       { left: 33.4%;       top: 82.4%;       width: 31.7%;       height: 4.3%; }
+.fp-footer-left { left: 8.0%; top: 95.0%; width: 36.0%; height: 3.0%; }
+.fp-footer-right{ left: 56.0%;top: 95.0%;width: 36.0%;height: 3.0%; }
 
-@media (max-width: 768px) {
-  .top-nav { flex-direction: column; gap: 16px; margin-bottom: 32px; }
-  .top-nav .nav-group { gap: 20px; flex-wrap: wrap; justify-content: center; }
-  .top-nav .nav-spacer { display: none; }
-}
-
-/* ===== HERO — sigil + wordmark + tagline ===== */
-.hero {
-  text-align: center;
-  margin-bottom: 64px;
-}
-.hero-sigil {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 16px;
-  display: block;
-  /* Placeholder for the standalone flame sigil — drop in when Grey ships it.
-     For now, a stylized radial-gradient flame. */
-  background: radial-gradient(ellipse at 50% 65%,
-    rgba(255, 106, 0, 0.5) 0%,
-    rgba(212, 160, 23, 0.25) 35%,
-    transparent 70%);
-  filter: drop-shadow(0 0 24px rgba(255, 106, 0, 0.25));
-}
-.wordmark {
-  font-family: var(--type-display);
-  font-weight: 600;
-  font-size: clamp(36px, 6.5vw, 84px);
-  letter-spacing: 0.08em;
-  color: var(--hm-gold);
-  margin: 0;
-  text-shadow: 0 2px 18px rgba(13,19,33,0.85), 0 0 32px rgba(212, 160, 23, 0.12);
-  line-height: 1;
-}
-.tagline {
-  font-style: italic;
-  font-size: clamp(13px, 1.6vw, 19px);
-  color: var(--hm-linen);
-  margin: 18px 0 0;
-  text-shadow: 0 2px 8px rgba(13,19,33,0.8);
-  letter-spacing: 0.02em;
-}
-.compass-divider {
+/* === ANCHORED CONTENT TYPOGRAPHY === */
+.fp-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  margin: 18px auto 0;
-  max-width: 280px;
-}
-.compass-divider .rule { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--engraving-secondary), transparent); }
-.compass-divider .compass {
-  width: 16px; height: 16px;
-  border: 1px solid var(--engraving-primary);
-  border-radius: 50%;
-  position: relative;
-  flex: 0 0 16px;
-  opacity: 0.7;
-}
-.compass-divider .compass::before, .compass-divider .compass::after { content: ""; position: absolute; background: var(--engraving-primary); }
-.compass-divider .compass::before { top: 1px; bottom: 1px; left: 50%; width: 1px; transform: translateX(-50%); }
-.compass-divider .compass::after  { left: 1px; right: 1px; top: 50%; height: 1px; transform: translateY(-50%); }
-
-/* ===== MAIN GRID — left rail | cards | right rail ===== */
-.main-grid {
-  display: grid;
-  grid-template-columns: 200px 1fr 200px;
-  gap: 40px;
-  align-items: start;
-  margin-bottom: 64px;
-}
-@media (max-width: 1100px) { .main-grid { grid-template-columns: 1fr; gap: 32px; } }
-
-/* ===== RAILS ===== */
-.rail {
-  font-family: var(--type-body);
-}
-.rail-heading {
+  justify-content: space-around;
   font-family: var(--type-display);
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--engraving-primary);
-  margin: 0 0 8px;
-}
-.rail-heading-divider {
-  display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--engraving-secondary);
-  margin: 8px 0 16px;
-}
-.rail-text {
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(199, 194, 187, 0.9);
-  margin: 0 0 24px;
-}
-.rail-tagline {
-  font-family: var(--type-display);
-  font-size: 11px;
+  font-size: clamp(9px, 0.9vw, 12px);
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--engraving-primary);
-  text-align: center;
-  margin: 24px 0 0;
-  padding-top: 16px;
-  border-top: 1px solid var(--engraving-faint);
-  line-height: 1.6;
+  color: var(--gold-soft);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
 }
-.insight-quote {
-  font-style: italic;
-  font-size: 15px;
-  line-height: 1.6;
-  color: rgba(199, 194, 187, 0.9);
-  margin: 0 0 24px;
-  padding-left: 12px;
-  border-left: 1px solid var(--engraving-secondary);
-}
-.journal-card {
-  /* Use panel_single as a tile background for the journal entry */
-  background-image: url('assets/brand/panel_single.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  padding: 24px 18px;
-  text-align: center;
-  margin-top: 16px;
-}
-.journal-label {
-  font-family: var(--type-display);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--engraving-primary);
-  margin: 0 0 8px;
-}
-.journal-snippet { font-style: italic; font-size: 14px; margin: 0 0 8px; color: rgba(199, 194, 187, 0.9); }
-.journal-date { font-family: var(--type-display); font-size: 10px; letter-spacing: 0.15em; color: var(--engraving-secondary); margin: 0 0 14px; }
-.journal-link {
-  display: inline-block;
-  font-family: var(--type-display);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--engraving-primary);
-  border: 1px solid var(--engraving-secondary);
-  padding: 6px 14px;
-}
-.journal-link:hover { background: var(--engraving-faint); color: var(--hm-flame); }
+.fp-nav a { color: var(--gold-soft); }
+.fp-nav a:hover { color: var(--hm-flame); }
 
-/* ===== CARDS ROW — uses panel_cards_row.png as backdrop ===== */
-.cards-strip {
-  position: relative;
-  background-image: url('assets/brand/panel_cards_row.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  /* The strip image is 1286×307 = aspect ratio 4.19. Let CSS sustain it. */
-  aspect-ratio: 1286 / 307;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  padding: 0;
+.fp-wordmark {
+  display: flex; align-items: center; justify-content: center;
+  margin: 0;
+  color: var(--hm-gold);
+  font-family: var(--type-display);
+  font-size: clamp(20px, 4vw, 56px);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 2px 18px rgba(13,19,33,0.85), 0 0 32px rgba(212, 160, 23, 0.12);
 }
-.card {
-  position: relative;
+
+.fp-tagline {
+  display: flex; align-items: center; justify-content: center;
+  margin: 0; text-align: center;
+  color: var(--hm-linen);
+  font-family: var(--type-body);
+  font-style: italic;
+  font-size: clamp(10px, 1.2vw, 16px);
+  text-shadow: 0 2px 8px rgba(13,19,33,0.85);
+}
+
+/* Rails — vertical content blocks */
+.fp-rail-left, .fp-rail-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 4%;
+  text-align: center;
+  font-family: var(--type-body);
+}
+.rail-heading-inline {
+  font-family: var(--type-display);
+  font-size: clamp(8px, 0.9vw, 12px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
+  line-height: 1.2;
+}
+.rail-body-inline {
+  font-family: var(--type-body);
+  font-size: clamp(8px, 0.85vw, 11px);
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(199, 194, 187, 0.92);
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
+}
+.rail-tag-inline {
+  font-family: var(--type-display);
+  font-size: clamp(7px, 0.75vw, 10px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  margin: 0;
+  line-height: 1.5;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
+}
+
+/* Cards — sit inside painted card frames */
+.fp-card {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -273,135 +154,111 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--type-display); letter-spacing: 0.04e
   text-align: center;
   background: transparent;
   border: 0;
-  color: var(--hm-linen);
-  font-family: var(--type-body);
+  padding: 6% 8%;
   cursor: pointer;
-  padding: 4% 6%;
   transition: all 0.25s ease;
+  font-family: var(--type-body);
 }
-.card:hover, .card:focus-visible {
+.fp-card:hover, .fp-card:focus-visible {
   outline: none;
-  /* Inset glow inside the painted panel on hover */
-  box-shadow: inset 0 0 32px rgba(255, 106, 0, 0.15);
+  background: rgba(255, 106, 0, 0.05);
+  box-shadow: inset 0 0 24px rgba(255, 106, 0, 0.15);
 }
-.card-icon {
-  width: 38px;
-  height: 38px;
-  margin: 0 auto 10px;
-  /* Placeholder — different per card via class */
-  background: radial-gradient(circle, var(--engraving-primary) 0%, transparent 60%);
-  opacity: 0.7;
-}
-.card-icon.icon-compass { background: radial-gradient(circle, transparent 35%, var(--engraving-primary) 36%, var(--engraving-primary) 38%, transparent 39%); }
-.card-icon.icon-tomes   { background: linear-gradient(180deg, transparent 30%, var(--engraving-primary) 30%, var(--engraving-primary) 70%, transparent 70%); }
-.card-icon.icon-lantern { background: radial-gradient(ellipse at 50% 40%, var(--hm-flame) 0%, var(--engraving-primary) 30%, transparent 70%); }
-.card-icon.icon-telescope { background: linear-gradient(45deg, transparent 40%, var(--engraving-primary) 40%, var(--engraving-primary) 60%, transparent 60%); }
 .card-title {
   font-family: var(--type-display);
-  font-size: clamp(12px, 1.2vw, 16px);
+  font-size: clamp(9px, 0.95vw, 13px);
+  font-weight: 600;
   letter-spacing: 0.08em;
   font-variant: small-caps;
-  font-weight: 600;
   color: var(--hm-gold);
   margin: 0 0 4px;
-  text-shadow: 0 2px 6px rgba(13,19,33,0.8);
+  line-height: 1.2;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
 }
 .card-desc {
-  font-size: clamp(10px, 0.9vw, 12px);
+  font-family: var(--type-body);
+  font-size: clamp(7px, 0.75vw, 10px);
   font-style: italic;
   color: rgba(199, 194, 187, 0.92);
-  margin: 0 0 6px;
-  line-height: 1.4;
-  text-shadow: 0 2px 6px rgba(13,19,33,0.8);
-}
-.card-arrow { font-family: var(--type-display); color: var(--engraving-primary); font-size: 14px; }
-
-@media (max-width: 768px) {
-  /* Drop the painted card-row backdrop on mobile and stack vertically */
-  .cards-strip {
-    background-image: none;
-    aspect-ratio: auto;
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-  .card {
-    background-image: url('assets/brand/panel_single.png');
-    background-size: 100% 100%;
-    aspect-ratio: 1 / 1;
-  }
+  margin: 0;
+  line-height: 1.35;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
 }
 
-/* ===== PULL QUOTE — uses panel_single as backdrop ===== */
-.pull-quote {
-  background-image: url('assets/brand/panel_single.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  /* Single panel is square (310×308). Make a wider crop by stretching. */
-  aspect-ratio: 4 / 1;
-  max-width: 600px;
-  margin: 48px auto 32px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 4% 8%;
+/* Pull quote */
+.fp-quote {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0; text-align: center;
 }
-.quote-text {
+.fp-quote .quote-text {
   font-family: var(--type-body);
   font-style: italic;
-  font-size: clamp(13px, 1.4vw, 17px);
-  margin: 0 0 6px;
-  color: var(--hm-linen);
+  font-size: clamp(8px, 0.9vw, 12px);
+  margin: 0 0 2px;
   line-height: 1.4;
-  text-shadow: 0 2px 6px rgba(13,19,33,0.8);
+  color: var(--hm-linen);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
 }
-.quote-attr {
+.fp-quote .quote-attr {
   font-family: var(--type-display);
-  font-size: 10px;
+  font-size: clamp(6px, 0.65vw, 9px);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--engraving-primary);
+  color: var(--hm-gold);
   margin: 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
 }
 
-/* ===== FOOTER ===== */
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Footer */
+.fp-footer-left, .fp-footer-right {
+  display: flex; align-items: center; justify-content: center;
   font-family: var(--type-display);
-  font-size: 11px;
-  letter-spacing: 0.15em;
+  font-size: clamp(6px, 0.7vw, 10px);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--engraving-primary);
-  margin-top: 48px;
-  padding-top: 20px;
+  color: var(--gold-soft);
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.85);
+  text-align: center;
 }
-.footer .footer-spacer { width: 60px; }
-.footer a { color: var(--hm-gold); }
-.footer a:hover { color: var(--hm-flame); }
-@media (max-width: 768px) { .footer { flex-direction: column; gap: 12px; text-align: center; } }
+.fp-footer-right a { color: var(--hm-gold); }
+.fp-footer-right a:hover { color: var(--hm-flame); }
+
+/* === MOBILE: anchored content collapses, stacked layout takes over === */
+@media (max-width: 768px) {
+  .frontispiece { aspect-ratio: auto; height: auto; min-height: 600px; padding-bottom: 16px; }
+  .fp-anchor { position: static; width: auto; height: auto; }
+  .frontispiece {
+    background-image: none;
+    background-color: var(--hm-midnight);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+  .fp-card {
+    background: rgba(212,160,23,0.05);
+    border: 1px solid var(--gold-faint);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .fp-quote { border: 1px solid var(--gold-faint); padding: 16px; border-radius: 8px; }
+}
 
 /* ===== SIDE PANELS ===== */
 .side-panel-overlay {
-  position: fixed;
-  inset: 0;
+  position: fixed; inset: 0;
   background: rgba(6, 10, 20, 0.7);
   backdrop-filter: blur(4px);
-  z-index: 200;
-  opacity: 0;
-  pointer-events: none;
+  z-index: 200; opacity: 0; pointer-events: none;
   transition: opacity 0.3s;
 }
 .side-panel-overlay.open { opacity: 1; pointer-events: auto; }
 .side-panel {
-  position: fixed;
-  top: 0; right: -480px; bottom: 0;
-  width: 460px;
-  max-width: 90vw;
+  position: fixed; top: 0; right: -480px; bottom: 0;
+  width: 460px; max-width: 90vw;
   background: #060A14;
-  border-left: 1px solid var(--engraving-primary);
+  border-left: 1px solid var(--hm-gold);
   z-index: 201;
   transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow-y: auto;
@@ -410,25 +267,25 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--type-display); letter-spacing: 0.04e
   color: var(--hm-linen);
 }
 .side-panel.open { right: 0; }
-.side-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--engraving-faint); }
+.side-panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--gold-faint); }
 .side-panel-title { font-family: var(--type-display); font-size: 22px; letter-spacing: 0.1em; font-variant: small-caps; color: var(--hm-gold); margin: 0; }
-.side-panel-close { background: transparent; border: 1px solid var(--engraving-secondary); color: var(--engraving-primary); width: 32px; height: 32px; font-size: 16px; display: flex; align-items: center; justify-content: center; }
+.side-panel-close { background: transparent; border: 1px solid var(--gold-faint); color: var(--gold-soft); width: 32px; height: 32px; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 .side-panel-close:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
 .side-panel-body { font-size: 15px; line-height: 1.7; }
 .side-panel-body p { margin: 0 0 14px; }
-.side-panel-body h3 { font-family: var(--type-display); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--engraving-primary); margin: 22px 0 10px; }
+.side-panel-body h3 { font-family: var(--type-display); font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-soft); margin: 22px 0 10px; }
 .side-panel-body ul { list-style: none; padding: 0; margin: 0 0 14px; }
-.side-panel-body li { padding: 12px 0; border-bottom: 1px solid var(--engraving-faint); display: flex; gap: 12px; }
+.side-panel-body li { padding: 12px 0; border-bottom: 1px solid var(--gold-faint); display: flex; gap: 12px; }
 .side-panel-body li:last-child { border-bottom: none; }
-.side-panel-body .badge { display: inline-block; padding: 2px 8px; font-family: var(--type-display); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--engraving-secondary); color: var(--engraving-primary); white-space: nowrap; height: fit-content; margin-top: 2px; }
-.side-panel-body .panel-cta { display: inline-block; margin-top: 14px; padding: 10px 18px; font-family: var(--type-display); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; border: 1px solid var(--engraving-primary); color: var(--engraving-primary); }
+.side-panel-body .badge { display: inline-block; padding: 2px 8px; font-family: var(--type-display); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; border: 1px solid var(--gold-faint); color: var(--gold-soft); white-space: nowrap; height: fit-content; margin-top: 2px; }
+.side-panel-body .panel-cta { display: inline-block; margin-top: 14px; padding: 10px 18px; font-family: var(--type-display); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; border: 1px solid var(--hm-gold); color: var(--hm-gold); }
 .side-panel-body .panel-cta:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
 
 /* ===== ACCESSIBILITY PANEL ===== */
 #a11yToggle {
   position: fixed; bottom: 24px; right: 24px; z-index: 150;
   background: #060A14; color: var(--hm-gold);
-  border: 1px solid var(--engraving-primary);
+  border: 1px solid var(--hm-gold);
   padding: 10px 16px;
   font-family: var(--type-display); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
   display: inline-flex; align-items: center; gap: 8px;
@@ -439,7 +296,7 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--type-display); letter-spacing: 0.04e
 #a11yPanel {
   position: fixed; bottom: 80px; right: 24px; z-index: 150;
   width: 320px; max-width: calc(100vw - 48px);
-  background: #060A14; border: 1px solid var(--engraving-primary);
+  background: #060A14; border: 1px solid var(--hm-gold);
   padding: 22px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
@@ -447,14 +304,14 @@ h1, h2, h3, h4, h5, h6 { font-family: var(--type-display); letter-spacing: 0.04e
 #a11yPanel label { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 5px 0; font-size: 14px; cursor: pointer; }
 #a11yPanel input[type="checkbox"] { accent-color: var(--hm-flame); }
 #a11yPanel input[type="range"] { width: 100%; accent-color: var(--hm-flame); }
-#a11yPanel button { background: transparent; color: var(--engraving-primary); border: 1px solid var(--engraving-secondary); padding: 8px 12px; font-family: var(--type-display); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; }
+#a11yPanel button { background: transparent; color: var(--gold-soft); border: 1px solid var(--gold-faint); padding: 8px 12px; font-family: var(--type-display); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; }
 #a11yPanel button:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
-#a11yPanel #a11yReset { background: transparent; border: none; color: var(--engraving-secondary); text-decoration: underline; padding: 4px 0; font-size: 11px; }
+#a11yPanel #a11yReset { background: transparent; border: none; color: var(--gold-faint); text-decoration: underline; padding: 4px 0; font-size: 11px; }
 body.a11y-atkinson, body.a11y-atkinson * { font-family: 'Atkinson Hyperlegible', sans-serif !important; }
 body.a11y-dyslexic, body.a11y-dyslexic * { font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important; }
 body.a11y-contrast { background: #000 !important; }
 body.a11y-contrast * { color: #fff !important; text-shadow: none !important; }
-body.a11y-contrast a, body.a11y-contrast .text-amber-300 { color: #ffd400 !important; }
+body.a11y-contrast a { color: #ffd400 !important; }
 body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { animation: none !important; transition: none !important; }
 
 .skip-link { position: absolute; top: -40px; left: 8px; background: var(--hm-flame); color: var(--hm-midnight); padding: 8px 16px; font-family: var(--type-display); font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; z-index: 300; }
@@ -466,101 +323,67 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 
 <a href="#main" class="skip-link">Skip to content</a>
 
-<!-- TOP LAYER — frame overlay sits over everything -->
-<div class="page-frame-overlay" aria-hidden="true"></div>
+<!-- ============= FRONTISPIECE — image + ALL content anchored ============= -->
+<div class="frontispiece" id="main">
 
-<div class="page" id="main">
-
-  <!-- TOP NAV -->
-  <nav class="top-nav" aria-label="Primary">
-    <div class="nav-group">
-      <a href="#study">The Study</a>
-      <a href="#systems">Systems</a>
-      <a href="#journal">Journal</a>
-    </div>
-    <span class="nav-spacer" aria-hidden="true"></span>
-    <div class="nav-group">
-      <a href="#about">About</a>
-      <a href="#manifesto">Manifesto</a>
-      <a href="#contact">Contact</a>
-    </div>
+  <!-- Top navigation, split around the central compass cartouche -->
+  <nav class="fp-anchor fp-nav-left fp-nav" aria-label="Primary, left">
+    <a href="#study">The Study</a>
+    <a href="#systems">Systems</a>
+    <a href="#journal">Journal</a>
+  </nav>
+  <nav class="fp-anchor fp-nav-right fp-nav" aria-label="Primary, right">
+    <a href="#about">About</a>
+    <a href="#manifesto">Manifesto</a>
+    <a href="#contact">Contact</a>
   </nav>
 
-  <!-- HERO -->
-  <header class="hero">
-    <div class="hero-sigil" role="img" aria-label="HearthMind flame sigil"></div>
-    <h1 class="wordmark">HEARTHMIND</h1>
-    <p class="tagline">Tools for clarity. Systems for becoming.</p>
-    <div class="compass-divider" aria-hidden="true">
-      <span class="rule"></span><span class="compass"></span><span class="rule"></span>
-    </div>
-  </header>
+  <h1 class="fp-anchor fp-wordmark">HEARTHMIND</h1>
+  <p class="fp-anchor fp-tagline">Tools for clarity. Systems for becoming.</p>
 
-  <!-- MAIN GRID -->
-  <div class="main-grid">
+  <!-- Left rail: Our Purpose -->
+  <aside class="fp-anchor fp-rail-left" aria-label="Our Purpose">
+    <h2 class="rail-heading-inline">Our Purpose</h2>
+    <p class="rail-body-inline">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
+    <p class="rail-tag-inline">You are not<br/>alone in<br/>this journey</p>
+  </aside>
 
-    <aside class="rail rail-left" aria-label="Our Purpose">
-      <h2 class="rail-heading">Our Purpose</h2>
-      <span class="rail-heading-divider" aria-hidden="true"></span>
-      <p class="rail-text">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
-      <p class="rail-tagline">You are not<br/>alone in<br/>this journey</p>
-    </aside>
+  <!-- Right rail: Recent Insight + Journal Entry -->
+  <aside class="fp-anchor fp-rail-right" aria-label="Recent Insight and Journal">
+    <h2 class="rail-heading-inline">Recent Insight</h2>
+    <p class="rail-body-inline">"Clarity is not about knowing everything. It's about seeing what matters."</p>
+    <h2 class="rail-heading-inline" style="margin-top: 8px;">Journal Entry</h2>
+    <p class="rail-body-inline">The clearest direction is found in stillness.</p>
+    <p class="rail-tag-inline">May 16, 2024</p>
+  </aside>
 
-    <!-- CARDS ROW — sits inside the painted-panel strip -->
-    <div class="cards-strip" role="navigation" aria-label="Destinations">
-      <button class="card" type="button" data-panel="study">
-        <span class="card-icon icon-compass" aria-hidden="true"></span>
-        <h3 class="card-title">Enter the Study</h3>
-        <p class="card-desc">Step inside.<br/>Begin your journey.</p>
-        <span class="card-arrow" aria-hidden="true">→</span>
-      </button>
-      <button class="card" type="button" data-panel="systems">
-        <span class="card-icon icon-tomes" aria-hidden="true"></span>
-        <h3 class="card-title">Explore the Systems</h3>
-        <p class="card-desc">Discover the tools<br/>and their purpose.</p>
-        <span class="card-arrow" aria-hidden="true">→</span>
-      </button>
-      <button class="card" type="button" data-panel="help">
-        <span class="card-icon icon-lantern" aria-hidden="true"></span>
-        <h3 class="card-title">I need Help</h3>
-        <p class="card-desc">Find guidance for<br/>where you are.</p>
-        <span class="card-arrow" aria-hidden="true">→</span>
-      </button>
-      <button class="card" type="button" data-panel="build">
-        <span class="card-icon icon-telescope" aria-hidden="true"></span>
-        <h3 class="card-title">I Want to Build</h3>
-        <p class="card-desc">Create, shape,<br/>and contribute.</p>
-        <span class="card-arrow" aria-hidden="true">→</span>
-      </button>
-    </div>
+  <!-- Four destination cards -->
+  <button class="fp-anchor fp-card-1 fp-card" type="button" data-panel="study">
+    <h3 class="card-title">Enter the Study</h3>
+    <p class="card-desc">Step inside.<br/>Begin your journey.</p>
+  </button>
+  <button class="fp-anchor fp-card-2 fp-card" type="button" data-panel="systems">
+    <h3 class="card-title">Explore the Systems</h3>
+    <p class="card-desc">Discover the tools<br/>and their purpose.</p>
+  </button>
+  <button class="fp-anchor fp-card-3 fp-card" type="button" data-panel="help">
+    <h3 class="card-title">I need Help</h3>
+    <p class="card-desc">Find guidance for<br/>where you are.</p>
+  </button>
+  <button class="fp-anchor fp-card-4 fp-card" type="button" data-panel="build">
+    <h3 class="card-title">I Want to Build</h3>
+    <p class="card-desc">Create, shape,<br/>and contribute.</p>
+  </button>
 
-    <aside class="rail rail-right" aria-label="Recent Insight and Journal">
-      <h2 class="rail-heading">Recent Insight</h2>
-      <span class="rail-heading-divider" aria-hidden="true"></span>
-      <p class="insight-quote">"Clarity is not about knowing everything. It's about seeing what matters."</p>
-
-      <article class="journal-card">
-        <h3 class="journal-label">Journal Entry</h3>
-        <p class="journal-snippet">The clearest direction is found in stillness.</p>
-        <p class="journal-date">May 16, 2024</p>
-        <a href="#journal" class="journal-link">Read More →</a>
-      </article>
-    </aside>
-
-  </div>
-
-  <!-- PULL QUOTE -->
-  <blockquote class="pull-quote">
+  <!-- Pull quote -->
+  <blockquote class="fp-anchor fp-quote">
     <p class="quote-text">"The mind is not a vessel to be filled, but a compass to be aligned."</p>
     <p class="quote-attr">— HearthMind</p>
   </blockquote>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div>A Laboratory for Consciousness · Built for Exploration · Made to Endure</div>
-    <span class="footer-spacer" aria-hidden="true"></span>
-    <div>© 2026 HearthMind LLC · <a href="https://carbonandsilicon.substack.com" target="_blank" rel="noopener">Carbon &amp; Silicon</a></div>
-  </footer>
+  <!-- Footer -->
+  <p class="fp-anchor fp-footer-left">A Laboratory for Consciousness</p>
+  <p class="fp-anchor fp-footer-right">© 2026 HearthMind LLC · <a href="https://carbonandsilicon.substack.com" target="_blank" rel="noopener">Carbon &amp; Silicon</a></p>
 
 </div>
 
@@ -660,7 +483,7 @@ function closePanel() {
   panel.setAttribute('aria-hidden','true');
   if (lastFocused) lastFocused.focus();
 }
-document.querySelectorAll('.card[data-panel]').forEach(c => c.addEventListener('click', () => openPanel(c.dataset.panel)));
+document.querySelectorAll('.fp-card[data-panel]').forEach(c => c.addEventListener('click', () => openPanel(c.dataset.panel)));
 panelClose.addEventListener('click', closePanel);
 overlay.addEventListener('click', closePanel);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) closePanel(); });
