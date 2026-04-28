@@ -126,13 +126,7 @@ button { font-family: inherit; cursor: pointer; }
   height: 1px;
   background: var(--hm-flame);
 }
-.top-nav .nav-flame {
-  display: inline-block;
-  width: 32px; height: 32px;
-  /* Placeholder for Grey's flame sigil — drop in: background-image: url('assets/brand/hearthmind_flame_sigil.svg'); */
-  background: radial-gradient(ellipse at 50% 60%, var(--hm-flame) 0%, transparent 60%);
-  opacity: 0.6;
-}
+.top-nav .nav-flame { display: none; } /* Sigil lives in Grey's scene */
 
 @media (max-width: 900px) {
   .top-nav { flex-direction: column; gap: 16px; padding: 8px 12px 24px; }
@@ -212,14 +206,15 @@ button { font-family: inherit; cursor: pointer; }
 
 .rail-tagline {
   font-family: var(--type-display);
-  font-size: 11px;
-  letter-spacing: 0.18em;
+  font-size: 10px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--engraving-secondary);
+  color: var(--engraving-primary);
   text-align: center;
-  margin-top: 32px;
-  padding-top: 24px;
+  margin-top: 24px;
+  padding-top: 16px;
   border-top: 1px solid var(--engraving-faint);
+  line-height: 1.6;
 }
 
 /* Right rail — Recent Insight + Journal Entry stack */
@@ -301,19 +296,19 @@ button { font-family: inherit; cursor: pointer; }
 .center { padding: 0 0 48px; }
 
 /* The center "scene" sits in the upper portion of Grey's illustrated scene.
-   Wordmark + tagline float above the empty card row in the image. */
+   Wordmark + tagline float above the painted card frames in the image. */
 .scene {
   position: relative;
-  min-height: 380px;
+  min-height: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 80px 16px 32px;
+  justify-content: flex-start;
+  padding: 32px 16px 0;
   text-align: center;
 }
 
-@media (max-width: 900px) { .scene { min-height: 240px; padding: 32px 8px 16px; } }
+@media (max-width: 900px) { .scene { min-height: 200px; padding: 16px 8px 0; } }
 
 /* Flame sigil at top of scene */
 .scene-sigil { display: none; } /* Sigil lives inside Grey's scene illustration */
@@ -339,34 +334,7 @@ button { font-family: inherit; cursor: pointer; }
   letter-spacing: 0.02em;
 }
 
-.compass-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8px 0 48px;
-  gap: 12px;
-}
-.compass-divider .rule {
-  flex: 0 0 80px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--engraving-secondary), transparent);
-}
-.compass-divider .compass {
-  width: 24px;
-  height: 24px;
-  /* Placeholder for Grey's compass divider — assets/brand/compass_divider.svg */
-  border: 1px solid var(--engraving-primary);
-  border-radius: 50%;
-  position: relative;
-  opacity: 0.7;
-}
-.compass-divider .compass::before, .compass-divider .compass::after {
-  content: "";
-  position: absolute;
-  background: var(--engraving-primary);
-}
-.compass-divider .compass::before { top: 2px; bottom: 2px; left: 50%; width: 1px; transform: translateX(-50%); }
-.compass-divider .compass::after { left: 2px; right: 2px; top: 50%; height: 1px; transform: translateY(-50%); }
+.compass-divider { display: none; } /* Grey's painted compass is in the scene image */
 
 /* ===================================================================
    FOUR DESTINATION CARDS
@@ -375,9 +343,9 @@ button { font-family: inherit; cursor: pointer; }
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 12px;
   margin: 0 auto 48px;
-  max-width: 920px;
+  max-width: 760px;
 }
 
 @media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
@@ -385,9 +353,13 @@ button { font-family: inherit; cursor: pointer; }
 
 .card {
   position: relative;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: 28px 20px 32px;
+  min-height: 180px;
+  padding: 32px 16px;
   background: transparent;          /* Grey's painted card frame is in the bg image */
   border: 1px solid transparent;    /* Becomes visible on hover only */
   color: var(--hm-linen);
@@ -408,21 +380,7 @@ button { font-family: inherit; cursor: pointer; }
 }
 .card:hover .card-icon, .card:focus-visible .card-icon { filter: drop-shadow(0 0 12px rgba(255, 106, 0, 0.4)); }
 
-.card-icon {
-  width: 56px; height: 56px;
-  margin: 0 auto 18px;
-  /* Placeholder — replaced per card by individual icon SVG from Grey */
-  background: radial-gradient(circle at 50% 50%, var(--engraving-primary) 0%, transparent 60%);
-  opacity: 0.65;
-  transition: filter 0.3s;
-}
-
-.card-icon.icon-compass {
-  background: radial-gradient(circle, transparent 35%, var(--engraving-primary) 36%, var(--engraving-primary) 38%, transparent 39%);
-}
-.card-icon.icon-tomes  { background: linear-gradient(180deg, transparent 30%, var(--engraving-primary) 30%, var(--engraving-primary) 70%, transparent 70%); }
-.card-icon.icon-lantern { background: radial-gradient(ellipse at 50% 40%, var(--hm-flame) 0%, transparent 30%, transparent 100%); }
-.card-icon.icon-telescope { background: linear-gradient(45deg, transparent 40%, var(--engraving-primary) 40%, var(--engraving-primary) 60%, transparent 60%); }
+.card-icon { display: none; } /* Icon slot reserved — Grey can drop SVGs in later */
 
 .card-title {
   font-family: var(--type-display);
