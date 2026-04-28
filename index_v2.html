@@ -90,17 +90,17 @@ body {
 
 /* === TOP NAV (split across the top frame, around the central compass ornament) === */
 .fp-nav-left {
-  left: 7%;
+  left: 18%;
   top: 3.2%;
-  width: 30%;
+  width: 28%;
   display: flex;
   justify-content: space-around;
   gap: 16px;
 }
 .fp-nav-right {
-  right: 7%;
+  right: 18%;
   top: 3.2%;
-  width: 30%;
+  width: 28%;
   display: flex;
   justify-content: space-around;
   gap: 16px;
@@ -109,9 +109,9 @@ body {
 /* === SIGIL CIRCLE (top-center, over the clouds) === */
 .fp-sigil {
   left: 50%;
-  top: 22%;
+  top: 18%;
   transform: translate(-50%, -50%);
-  width: 16%;
+  width: 14%;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
@@ -119,44 +119,44 @@ body {
   pointer-events: none;
 }
 
-/* === WORDMARK + TAGLINE (just below the sigil) === */
+/* === WORDMARK + TAGLINE (lower position, over upper part of card-row backdrop) === */
 .fp-wordmark {
   left: 50%;
-  top: 38%;
+  top: 30%;
   transform: translate(-50%, -50%);
   text-align: center;
   width: 60%;
 }
 .fp-tagline {
   left: 50%;
-  top: 46%;
+  top: 39%;
   transform: translate(-50%, -50%);
   text-align: center;
   width: 50%;
 }
 
-/* === LEFT RAIL (Our Purpose, vertical inside painted scene against left edge) === */
+/* === LEFT RAIL (Our Purpose) — wider zone for legibility === */
 .fp-rail-left {
-  left: 4%;
-  top: 16%;
-  width: 9%;
-  height: 56%;
+  left: 3%;
+  top: 18%;
+  width: 13%;
+  height: 50%;
 }
+/* === RIGHT RAIL (Recent Insight) — wider zone for legibility === */
 .fp-rail-right {
-  right: 4%;
-  top: 16%;
-  width: 9%;
-  height: 56%;
+  right: 3%;
+  top: 18%;
+  width: 13%;
+  height: 50%;
 }
 
-/* === FOUR CARDS — each frame painted in image, content anchored inside ===
-   Card row: y=64% to y=87% (height ~23%)
-   Cards span x=15% to x=85% with thin gold dividers between
-   Each card occupies ~17.5% width, gap absorbs the painted divider lines */
+/* === FOUR CARDS — anchored INSIDE painted frames ===
+   Painted card row sits at approximately y=58% to y=81% in image.
+   Cards span x=15% to x=85% (4 equal columns separated by thin gold dividers). */
 .fp-cards {
   left: 15%;
   right: 15%;
-  top: 64%;
+  top: 58%;
   height: 23%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -174,18 +174,16 @@ body {
 
 /* === FOOTER (split across the bottom frame, around the compass) === */
 .fp-footer-left {
-  left: 7%;
-  bottom: 2.4%;
-  width: 30%;
+  left: 8%;
+  bottom: 1.8%;
+  width: 36%;
   text-align: center;
-  font-size: clamp(8px, 0.8vw, 11px);
 }
 .fp-footer-right {
-  right: 7%;
-  bottom: 2.4%;
-  width: 30%;
+  right: 8%;
+  bottom: 1.8%;
+  width: 36%;
   text-align: center;
-  font-size: clamp(8px, 0.8vw, 11px);
 }
 
 @media (max-width: 768px) {
@@ -789,34 +787,36 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 .rail-vertical {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 8%;
-  padding: 4%;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 6%;
   font-family: var(--type-body);
   text-align: center;
+  /* tighter line-height so paragraphs don't take a tower of space */
 }
 .rail-heading-inline {
   font-family: var(--type-display);
-  font-size: clamp(8px, 0.85vw, 12px);
-  letter-spacing: 0.2em;
+  font-size: clamp(10px, 1.1vw, 15px);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--engraving-primary);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+  line-height: 1.2;
 }
 .rail-text-inline {
-  font-size: clamp(8px, 0.8vw, 12px);
+  font-size: clamp(10px, 1vw, 14px);
   font-style: italic;
-  color: rgba(199, 194, 187, 0.90);
-  margin: 0;
-  line-height: 1.5;
+  color: rgba(199, 194, 187, 0.92);
+  margin: 0 0 12px;
+  line-height: 1.45;
   text-shadow: 0 2px 6px rgba(13,19,33,0.85);
 }
 .insight-quote-inline { font-style: italic; }
 .rail-tagline-inline {
   font-family: var(--type-display);
-  font-size: clamp(7px, 0.7vw, 10px);
-  letter-spacing: 0.18em;
+  font-size: clamp(8px, 0.8vw, 11px);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--engraving-secondary);
   margin: 0;
@@ -829,6 +829,9 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
   font-family: var(--type-body);
   letter-spacing: 0;
   color: rgba(199, 194, 187, 0.85);
+  font-size: 1.1em;
+  display: block;
+  margin-top: 6px;
 }
 
 /* Wordmark + tagline */
@@ -846,13 +849,14 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 /* Footer in the bottom painted frame */
 .fp-footer-left, .fp-footer-right {
   font-family: var(--type-display);
-  letter-spacing: 0.15em;
+  font-size: clamp(9px, 0.95vw, 13px);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--engraving-secondary);
+  color: var(--engraving-primary);
   margin: 0;
-  text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+  text-shadow: 0 2px 6px rgba(13,19,33,0.9);
 }
-.fp-footer-right a { color: var(--engraving-primary); text-decoration: none; }
+.fp-footer-right a { color: var(--hm-gold); text-decoration: none; }
 .fp-footer-right a:hover { color: var(--hm-flame); }
 
 .fp-cards .card {
@@ -861,9 +865,9 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;     /* text sits in lower portion, icon-zone empty above */
+  justify-content: center;       /* center vertically inside painted frame */
   text-align: center;
-  padding: 8% 8% 10%;
+  padding: 12% 8%;
   min-height: 0;
   cursor: pointer;
   transition: all 0.25s ease;
