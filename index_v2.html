@@ -57,15 +57,14 @@ body {
 
 /* ===================================================================
    FRONTISPIECE — image + anchored content sharing one coordinate system.
-   Image is 1535×1024 (3:2). Content is positioned by percentage inside
-   this wrapper, so it scales perfectly with the image at every viewport.
+   Zones measured from Grey's explicit zone-map (the diagram with white outlines).
+   Image is 1535×1024 (3:2). All content positioned by % inside this wrapper.
    =================================================================== */
 .frontispiece {
   position: relative;
   width: 100%;
-  max-width: 1600px;          /* don't blow up beyond image's natural res */
+  max-width: 1600px;
   margin: 0 auto;
-  /* Aspect ratio locks the wrapper to match the image's ratio */
   aspect-ratio: 1535 / 1024;
 }
 .frontispiece-bg {
@@ -84,61 +83,115 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(13,19,33,0.04) 0%, rgba(13,19,33,0.10) 50%, rgba(13,19,33,0.25) 100%);
+  background: linear-gradient(180deg, rgba(13,19,33,0.04) 0%, rgba(13,19,33,0.08) 50%, rgba(13,19,33,0.20) 100%);
 }
 
-/* Anchored content overlays — these sit on TOP of the painted scene
-   at the exact percentages where the painted frames live. */
-.fp-anchor {
-  position: absolute;
-  z-index: 3;
+.fp-anchor { position: absolute; z-index: 3; }
+
+/* === TOP NAV (split across the top frame, around the central compass ornament) === */
+.fp-nav-left {
+  left: 7%;
+  top: 3.2%;
+  width: 30%;
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
+}
+.fp-nav-right {
+  right: 7%;
+  top: 3.2%;
+  width: 30%;
+  display: flex;
+  justify-content: space-around;
+  gap: 16px;
 }
 
-/* WORDMARK — sits in the upper-middle of the scene, above the painted clouds */
+/* === SIGIL CIRCLE (top-center, over the clouds) === */
+.fp-sigil {
+  left: 50%;
+  top: 22%;
+  transform: translate(-50%, -50%);
+  width: 16%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* === WORDMARK + TAGLINE (just below the sigil) === */
 .fp-wordmark {
   left: 50%;
-  top: 28%;
+  top: 38%;
   transform: translate(-50%, -50%);
   text-align: center;
-  width: 90%;
+  width: 60%;
 }
-
-/* TAGLINE — just below the wordmark */
 .fp-tagline {
   left: 50%;
-  top: 41%;
+  top: 46%;
   transform: translate(-50%, -50%);
   text-align: center;
-  width: 80%;
+  width: 50%;
 }
 
-/* CARDS — anchored to the four painted card frames.
-   Measured from the image: cards span roughly x=15.5%..80%, y=53%..75%.
-   Each card is ~16% wide, separated by thin gold dividers. */
+/* === LEFT RAIL (Our Purpose, vertical inside painted scene against left edge) === */
+.fp-rail-left {
+  left: 4%;
+  top: 16%;
+  width: 9%;
+  height: 56%;
+}
+.fp-rail-right {
+  right: 4%;
+  top: 16%;
+  width: 9%;
+  height: 56%;
+}
+
+/* === FOUR CARDS — each frame painted in image, content anchored inside ===
+   Card row: y=64% to y=87% (height ~23%)
+   Cards span x=15% to x=85% with thin gold dividers between
+   Each card occupies ~17.5% width, gap absorbs the painted divider lines */
 .fp-cards {
-  left: 16%;
-  right: 20%;
-  top: 55%;
-  bottom: 25%;
+  left: 15%;
+  right: 15%;
+  top: 64%;
+  height: 23%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0;
+  gap: 0.5%;
 }
 
-/* PULL QUOTE — anchored to the painted quote frame at the bottom-center */
+/* === PULL QUOTE (just above the bottom painted frame) === */
 .fp-quote {
   left: 50%;
-  top: 86%;
+  top: 91%;
   transform: translate(-50%, -50%);
-  width: 38%;
+  width: 28%;
   text-align: center;
+}
+
+/* === FOOTER (split across the bottom frame, around the compass) === */
+.fp-footer-left {
+  left: 7%;
+  bottom: 2.4%;
+  width: 30%;
+  text-align: center;
+  font-size: clamp(8px, 0.8vw, 11px);
+}
+.fp-footer-right {
+  right: 7%;
+  bottom: 2.4%;
+  width: 30%;
+  text-align: center;
+  font-size: clamp(8px, 0.8vw, 11px);
 }
 
 @media (max-width: 768px) {
-  /* On narrow viewports, the painted frame shrinks too much — content overflow risk.
-     Hide the frontispiece anchored content and use a fallback stacked layout below. */
+  /* Below 768px the painted frames get too small for legible anchored content.
+     Hide all anchor overlays; below-fold layout takes over. */
   .fp-anchor { display: none; }
-  .frontispiece { aspect-ratio: 1535 / 1024; }
 }
 
 h1, h2, h3, h4, h5, h6, .display { font-family: var(--type-display); letter-spacing: 0.04em; font-weight: 500; }
@@ -179,24 +232,7 @@ button { font-family: inherit; cursor: pointer; }
    TOP NAVIGATION — small caps, gold engraving, sits in the top frame
    =================================================================== */
 
-.top-nav {
-  position: relative;
-  z-index: 5;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 64px 12px;
-  font-family: var(--type-display);
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--engraving-primary);
-  max-width: 1600px;
-  margin: 0 auto;
-}
-@media (max-width: 768px) {
-  .top-nav { padding: 16px 24px 8px; }
-}
+.top-nav { display: none; } /* Replaced by anchored fp-nav-left/right inside frontispiece */
 .top-nav .nav-group { display: flex; gap: 48px; }
 .top-nav a {
   color: var(--engraving-primary);
@@ -721,71 +757,163 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 /* ===================================================================
    ANCHORED CONTENT — tuned to look good at viewport-scaled sizes
    =================================================================== */
-.fp-wordmark.wordmark {
-  font-size: clamp(28px, 5.5vw, 84px);
+
+/* Top navigation lives in the painted top frame */
+.fp-nav {
+  font-family: var(--type-display);
+  font-size: clamp(8px, 0.85vw, 13px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  text-shadow: 0 2px 6px rgba(13,19,33,0.8);
+}
+.fp-nav a {
+  color: var(--engraving-primary);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.fp-nav a:hover, .fp-nav a:focus { color: var(--hm-flame); outline: none; }
+.fp-nav a:focus-visible { outline: 1px solid var(--hm-flame); outline-offset: 4px; }
+
+/* Sigil placeholder — a stylized flame until Grey ships the SVG */
+.sigil-placeholder {
+  display: block;
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 60%, rgba(255, 106, 0, 0.35) 0%, rgba(212, 160, 23, 0.18) 40%, transparent 70%);
+  filter: drop-shadow(0 0 24px rgba(255, 106, 0, 0.18));
+}
+
+/* Vertical rails inside the painted scene */
+.rail-vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8%;
+  padding: 4%;
+  font-family: var(--type-body);
+  text-align: center;
+}
+.rail-heading-inline {
+  font-family: var(--type-display);
+  font-size: clamp(8px, 0.85vw, 12px);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  margin: 0 0 6px;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+}
+.rail-text-inline {
+  font-size: clamp(8px, 0.8vw, 12px);
+  font-style: italic;
+  color: rgba(199, 194, 187, 0.90);
   margin: 0;
-  /* drop shadow so wordmark reads cleanly over the cloudy painted sky */
+  line-height: 1.5;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+}
+.insight-quote-inline { font-style: italic; }
+.rail-tagline-inline {
+  font-family: var(--type-display);
+  font-size: clamp(7px, 0.7vw, 10px);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--engraving-secondary);
+  margin: 0;
+  line-height: 1.6;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+}
+.rail-tagline-inline em {
+  font-style: italic;
+  text-transform: none;
+  font-family: var(--type-body);
+  letter-spacing: 0;
+  color: rgba(199, 194, 187, 0.85);
+}
+
+/* Wordmark + tagline */
+.fp-wordmark.wordmark {
+  font-size: clamp(20px, 4.5vw, 64px);
+  margin: 0;
   text-shadow: 0 2px 18px rgba(13,19,33,0.85), 0 0 32px rgba(212, 160, 23, 0.12);
 }
 .fp-tagline.tagline {
-  font-size: clamp(11px, 1.4vw, 18px);
+  font-size: clamp(9px, 1.1vw, 16px);
   margin: 0;
   text-shadow: 0 2px 8px rgba(13,19,33,0.85);
 }
 
+/* Footer in the bottom painted frame */
+.fp-footer-left, .fp-footer-right {
+  font-family: var(--type-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--engraving-secondary);
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.85);
+}
+.fp-footer-right a { color: var(--engraving-primary); text-decoration: none; }
+.fp-footer-right a:hover { color: var(--hm-flame); }
+
 .fp-cards .card {
-  /* Anchored cards size to fill their grid slot, content centers within */
   background: transparent;
   border: 1px solid transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;     /* text sits in lower portion, icon-zone empty above */
   text-align: center;
-  padding: 8% 6%;
+  padding: 8% 8% 10%;
   min-height: 0;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 .fp-cards .card:hover, .fp-cards .card:focus-visible {
-  background: rgba(255, 106, 0, 0.06);
+  background: rgba(255, 106, 0, 0.05);
   outline: none;
   box-shadow: inset 0 0 24px rgba(255, 106, 0, 0.10);
 }
 .fp-cards .card-title {
   font-family: var(--type-display);
-  font-size: clamp(11px, 1.1vw, 15px);
+  font-size: clamp(9px, 0.95vw, 13px);
   letter-spacing: 0.08em;
   font-variant: small-caps;
   font-weight: 600;
   color: var(--hm-gold);
-  margin: 0 0 6px;
-  line-height: 1.2;
+  margin: 0 0 4px;
+  line-height: 1.15;
   text-shadow: 0 2px 8px rgba(13,19,33,0.9);
 }
 .fp-cards .card-desc {
-  font-size: clamp(9px, 0.85vw, 12px);
+  font-size: clamp(7px, 0.7vw, 10px);
   font-style: italic;
   color: rgba(199, 194, 187, 0.92);
-  margin: 0 0 6px;
-  line-height: 1.4;
+  margin: 0 0 4px;
+  line-height: 1.35;
   text-shadow: 0 2px 6px rgba(13,19,33,0.9);
 }
 .fp-cards .card-arrow {
   font-family: var(--type-display);
   color: var(--engraving-primary);
-  font-size: clamp(10px, 1vw, 14px);
+  font-size: clamp(8px, 0.85vw, 12px);
   margin-top: 2px;
 }
 
 .fp-quote .quote-text {
-  font-size: clamp(9px, 1vw, 14px);
-  margin: 0 0 4px;
+  font-family: var(--type-body);
+  font-style: italic;
+  font-size: clamp(8px, 0.85vw, 12px);
+  margin: 0 0 2px;
+  line-height: 1.4;
+  color: var(--hm-linen);
   text-shadow: 0 2px 6px rgba(13,19,33,0.9);
 }
 .fp-quote .quote-attr {
-  font-size: clamp(7px, 0.7vw, 10px);
+  font-family: var(--type-display);
+  font-size: clamp(6px, 0.65vw, 9px);
   letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
   margin: 0;
   text-shadow: 0 2px 6px rgba(13,19,33,0.9);
 }
@@ -793,19 +921,19 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 /* ===================================================================
    BELOW-FOLD — rails sit in dark margin below the frontispiece
    =================================================================== */
-.below-fold {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 64px;
-  max-width: 1100px;
-  margin: 64px auto;
-  padding: 0 48px;
-}
+.below-fold { display: none; }
 @media (max-width: 768px) {
-  .below-fold { grid-template-columns: 1fr; gap: 32px; padding: 0 24px; margin: 32px auto; }
+  .below-fold {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 24px;
+    margin: 16px auto;
+    max-width: 600px;
+  }
+  .below-fold .rail { padding-top: 0; }
+  .below-fold .rail-tagline { margin-top: 16px; padding-top: 12px; }
 }
-.below-fold .rail { padding-top: 0; }
-.below-fold .rail-tagline { margin-top: 16px; padding-top: 12px; }
 
 </style>
 </head>
@@ -814,28 +942,47 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 
 <a href="#main" class="skip-link">Skip to content</a>
 
-<!-- ============= TOP NAVIGATION ============= -->
-<nav class="top-nav" aria-label="Primary">
-  <div class="nav-group">
-    <a href="#study">The Study</a>
-    <a href="#systems">Systems</a>
-    <a href="#journal">Journal</a>
-  </div>
-  <div class="nav-group">
-    <a href="#about">About</a>
-    <a href="#manifesto">Manifesto</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
-
-<!-- ============= FRONTISPIECE — image + anchored content ============= -->
+<!-- ============= FRONTISPIECE — image + ALL content anchored to zones ============= -->
 <div class="frontispiece" id="main">
   <img class="frontispiece-bg" src="assets/brand/hearthmind_frontispiece_scene.png" alt="" aria-hidden="true" />
   <div class="frontispiece-veil" aria-hidden="true"></div>
 
+  <!-- Top navigation, split around the central compass ornament -->
+  <nav class="fp-anchor fp-nav-left fp-nav" aria-label="Primary navigation, left">
+    <a href="#study">The Study</a>
+    <a href="#systems">Systems</a>
+    <a href="#journal">Journal</a>
+  </nav>
+  <nav class="fp-anchor fp-nav-right fp-nav" aria-label="Primary navigation, right">
+    <a href="#about">About</a>
+    <a href="#manifesto">Manifesto</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Sigil zone (placeholder until Grey ships the standalone flame mark) -->
+  <div class="fp-anchor fp-sigil" aria-hidden="true">
+    <span class="sigil-placeholder"></span>
+  </div>
+
+  <!-- Wordmark + tagline -->
   <h1 class="fp-anchor fp-wordmark wordmark">HEARTHMIND</h1>
   <p class="fp-anchor fp-tagline tagline">Tools for clarity. Systems for becoming.</p>
 
+  <!-- Left rail — Our Purpose -->
+  <aside class="fp-anchor fp-rail-left rail-vertical" aria-label="Our Purpose">
+    <h2 class="rail-heading-inline">Our Purpose</h2>
+    <p class="rail-text-inline">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
+    <p class="rail-tagline-inline">You are not alone<br/>in this journey</p>
+  </aside>
+
+  <!-- Right rail — Recent Insight + Journal -->
+  <aside class="fp-anchor fp-rail-right rail-vertical" aria-label="Recent Insight">
+    <h2 class="rail-heading-inline">Recent Insight</h2>
+    <p class="rail-text-inline insight-quote-inline">"Clarity is not about knowing everything. It's about seeing what matters."</p>
+    <p class="rail-tagline-inline">Journal · May 16, 2024<br/><em>The clearest direction<br/>is found in stillness.</em></p>
+  </aside>
+
+  <!-- Four destination cards -->
   <div class="fp-anchor fp-cards" role="navigation" aria-label="Destinations">
     <button class="card" type="button" data-panel="study">
       <h3 class="card-title">Enter the Study</h3>
@@ -859,26 +1006,30 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
     </button>
   </div>
 
+  <!-- Pull quote -->
   <blockquote class="fp-anchor fp-quote pull-quote">
-    <p class="quote-text">"The mind is not a vessel to be filled,<br/>but a compass to be aligned."</p>
+    <p class="quote-text">"The mind is not a vessel to be filled, but a compass to be aligned."</p>
     <p class="quote-attr">— HearthMind</p>
   </blockquote>
+
+  <!-- Footer text in the bottom frame -->
+  <p class="fp-anchor fp-footer-left">A Laboratory for Consciousness · Built for Exploration · Made to Endure</p>
+  <p class="fp-anchor fp-footer-right">© 2026 HearthMind LLC · <a href="https://carbonandsilicon.substack.com" target="_blank" rel="noopener">Carbon &amp; Silicon</a></p>
 </div>
 
-<!-- ============= BELOW THE FRONTISPIECE — rails sit in dark margin ============= -->
-<section class="below-fold">
-  <aside class="rail rail-left" aria-label="Our Purpose">
+<!-- ============= BELOW THE FRONTISPIECE — mobile fallback / extended content ============= -->
+<section class="below-fold" aria-label="Detail">
+  <aside class="rail" aria-label="Our Purpose (mobile)">
     <h2 class="rail-heading">Our Purpose</h2>
     <span class="rail-heading-divider" aria-hidden="true"></span>
     <p class="rail-text">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
     <p class="rail-tagline">You are not alone in this journey</p>
   </aside>
 
-  <aside class="rail rail-right" aria-label="Recent Insight and Journal">
+  <aside class="rail" aria-label="Recent Insight (mobile)">
     <h2 class="rail-heading">Recent Insight</h2>
     <span class="rail-heading-divider" aria-hidden="true"></span>
     <p class="insight-quote">"Clarity is not about knowing everything. It's about seeing what matters."</p>
-
     <article class="journal-card">
       <h3 class="journal-label">Journal Entry</h3>
       <p class="journal-snippet">The clearest direction is found in stillness.</p>
