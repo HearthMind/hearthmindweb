@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HearthMind — A Laboratory for Consciousness</title>
+<meta name="description" content="HearthMind builds trauma-informed, neurodivergent-supportive AI systems. Tools for clarity. Systems for becoming." />
+
+<!-- Brand fonts: Cinzel for display, Playfair Display for body -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  /* HearthMind palette — locked from Grey's visual system v0.4 */
+  --hm-midnight: #0D1321;
+  --hm-deep-teal: #0B3D4D;
+  --hm-signal-teal: #1AA3AB;
+  --hm-flame: #FF6A00;
+  --hm-gold: #D4A017;
+  --hm-brown: #7A5A3A;
+  --hm-linen: #C7C2BB;
+
+  /* Engraving family — for hairline rules and ornament */
+  --engraving-primary: rgba(212, 160, 23, 0.85);     /* solid gold for active engraving */
+  --engraving-secondary: rgba(212, 160, 23, 0.45);   /* recessed gold for support */
+  --engraving-faint: rgba(212, 160, 23, 0.22);       /* hairline rules */
+
+  /* Ground texture */
+  --ground-base: #0D1321;
+  --ground-deep: #060A14;
+
+  /* Type scale */
+  --type-display: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --type-body: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  /* Frame proportions — these match Grey's mockup */
+  --frame-padding: 64px;       /* outer engraved frame inset from page edge */
+  --frame-padding-mobile: 24px;
+  --content-max: 1400px;       /* matches Grey's composition width */
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ground-base) url('assets/brand/hearthmind_frontispiece_scene.png') center center / cover no-repeat;
+  background-attachment: fixed;
+  color: var(--hm-linen);
+  font-family: var(--type-body);
+  font-size: 18px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+/* Soft veil over the frontispiece so text remains readable on every screen size */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(13,19,33,0.10) 0%, rgba(13,19,33,0.35) 60%, rgba(13,19,33,0.55) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.page-frame { position: relative; z-index: 1; }
+
+h1, h2, h3, h4, h5, h6, .display { font-family: var(--type-display); letter-spacing: 0.04em; font-weight: 500; }
+
+a { color: var(--hm-gold); text-decoration: none; transition: color 0.2s; }
+a:hover, a:focus { color: var(--hm-flame); outline: none; }
+a:focus-visible { outline: 2px solid var(--hm-flame); outline-offset: 4px; }
+
+button { font-family: inherit; cursor: pointer; }
+
+::selection { background: var(--hm-flame); color: var(--hm-midnight); }
+
+/* ===================================================================
+   PAGE FRAME — the engraved border around the whole composition
+   Will be visually anchored to Grey's frame asset; CSS provides
+   structural fallback if asset not loaded yet.
+   =================================================================== */
+
+.page-frame {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--frame-padding);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .page-frame { padding: var(--frame-padding-mobile); }
+}
+
+/* Hairline frame — fallback / structural cue. Grey's frame PNG sits on top via the body bg. */
+/* The engraved frame lives in Grey's frontispiece scene image. No CSS frame needed. */
+
+/* ===================================================================
+   TOP NAVIGATION — small caps, gold engraving, sits in the top frame
+   =================================================================== */
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 24px 32px;
+  font-family: var(--type-display);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+}
+.top-nav .nav-group { display: flex; gap: 48px; }
+.top-nav a {
+  color: var(--engraving-primary);
+  position: relative;
+  padding: 4px 0;
+}
+.top-nav a:hover { color: var(--hm-flame); }
+.top-nav a:hover::after {
+  content: "";
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 1px;
+  background: var(--hm-flame);
+}
+.top-nav .nav-flame {
+  display: inline-block;
+  width: 32px; height: 32px;
+  /* Placeholder for Grey's flame sigil — drop in: background-image: url('assets/brand/hearthmind_flame_sigil.svg'); */
+  background: radial-gradient(ellipse at 50% 60%, var(--hm-flame) 0%, transparent 60%);
+  opacity: 0.6;
+}
+
+@media (max-width: 900px) {
+  .top-nav { flex-direction: column; gap: 16px; padding: 8px 12px 24px; }
+  .top-nav .nav-group { gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .top-nav .nav-flame { display: none; }
+}
+
+/* ===================================================================
+   MAIN GRID — three columns: left rail / center / right rail
+   On mobile, stacks: center → left rail → right rail
+   =================================================================== */
+
+.main-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 48px;
+  align-items: start;
+  max-width: var(--content-max);
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (max-width: 1100px) {
+  .main-grid { grid-template-columns: 1fr; gap: 32px; }
+  .main-grid .rail-left { order: 2; }
+  .main-grid .center { order: 1; }
+  .main-grid .rail-right { order: 3; }
+}
+
+/* ===================================================================
+   SIDE RAILS — Our Purpose (left), Recent Insight + Journal (right)
+   =================================================================== */
+
+.rail {
+  font-family: var(--type-body);
+  color: var(--hm-linen);
+  padding-top: 64px;
+}
+
+.rail-heading {
+  font-family: var(--type-display);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  margin: 0 0 8px;
+}
+
+.rail-heading-divider {
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--engraving-secondary);
+  margin: 8px 0 16px;
+  position: relative;
+}
+.rail-heading-divider::before {
+  content: "✦";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--engraving-primary);
+  background: var(--ground-base);
+  padding: 0 4px;
+}
+
+.rail-text {
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgba(199, 194, 187, 0.85);
+  margin: 0 0 32px;
+}
+
+.rail-tagline {
+  font-family: var(--type-display);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--engraving-secondary);
+  text-align: center;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--engraving-faint);
+}
+
+/* Right rail — Recent Insight + Journal Entry stack */
+
+.insight-quote {
+  font-family: var(--type-body);
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(199, 194, 187, 0.85);
+  margin: 0 0 32px;
+  padding-left: 12px;
+  border-left: 1px solid var(--engraving-secondary);
+}
+
+.journal-card {
+  border: 1px solid var(--engraving-secondary);
+  padding: 16px 14px;
+  margin-top: 16px;
+  background: rgba(6, 10, 20, 0.4);
+}
+
+.journal-card .journal-icon {
+  width: 24px;
+  height: 24px;
+  margin: 0 auto 8px;
+  display: block;
+  /* Placeholder — quill icon */
+  background: linear-gradient(135deg, transparent 40%, var(--engraving-primary) 40%, var(--engraving-primary) 60%, transparent 60%);
+  opacity: 0.5;
+}
+
+.journal-card .journal-label {
+  font-family: var(--type-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  text-align: center;
+  margin: 0 0 8px;
+}
+
+.journal-card .journal-snippet {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 0 8px;
+  color: rgba(199, 194, 187, 0.85);
+}
+
+.journal-card .journal-date {
+  font-family: var(--type-display);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--engraving-secondary);
+  text-align: center;
+  margin: 0 0 12px;
+}
+
+.journal-card .journal-link {
+  display: block;
+  font-family: var(--type-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  text-align: center;
+  border: 1px solid var(--engraving-secondary);
+  padding: 6px 12px;
+  text-decoration: none;
+}
+.journal-card .journal-link:hover { background: var(--engraving-faint); color: var(--hm-flame); }
+
+/* ===================================================================
+   CENTER — Frontispiece: scene placeholder + sigil + wordmark + tagline + cards + quote
+   =================================================================== */
+
+.center { padding: 0 0 48px; }
+
+/* The center "scene" sits in the upper portion of Grey's illustrated scene.
+   Wordmark + tagline float above the empty card row in the image. */
+.scene {
+  position: relative;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 16px 32px;
+  text-align: center;
+}
+
+@media (max-width: 900px) { .scene { min-height: 240px; padding: 32px 8px 16px; } }
+
+/* Flame sigil at top of scene */
+.scene-sigil { display: none; } /* Sigil lives inside Grey's scene illustration */
+
+/* Wordmark */
+.wordmark {
+  font-family: var(--type-display);
+  font-weight: 600;
+  font-size: clamp(48px, 8vw, 84px);
+  letter-spacing: 0.08em;
+  color: var(--hm-gold);
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(212, 160, 23, 0.2);
+  line-height: 1;
+}
+
+.tagline {
+  font-family: var(--type-body);
+  font-style: italic;
+  font-size: clamp(16px, 2vw, 20px);
+  color: var(--hm-linen);
+  margin: 24px 0 16px;
+  letter-spacing: 0.02em;
+}
+
+.compass-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 8px 0 48px;
+  gap: 12px;
+}
+.compass-divider .rule {
+  flex: 0 0 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--engraving-secondary), transparent);
+}
+.compass-divider .compass {
+  width: 24px;
+  height: 24px;
+  /* Placeholder for Grey's compass divider — assets/brand/compass_divider.svg */
+  border: 1px solid var(--engraving-primary);
+  border-radius: 50%;
+  position: relative;
+  opacity: 0.7;
+}
+.compass-divider .compass::before, .compass-divider .compass::after {
+  content: "";
+  position: absolute;
+  background: var(--engraving-primary);
+}
+.compass-divider .compass::before { top: 2px; bottom: 2px; left: 50%; width: 1px; transform: translateX(-50%); }
+.compass-divider .compass::after { left: 2px; right: 2px; top: 50%; height: 1px; transform: translateY(-50%); }
+
+/* ===================================================================
+   FOUR DESTINATION CARDS
+   =================================================================== */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 0 auto 48px;
+  max-width: 920px;
+}
+
+@media (max-width: 900px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .cards-grid { grid-template-columns: 1fr; gap: 12px; } }
+
+.card {
+  position: relative;
+  display: block;
+  text-align: center;
+  padding: 28px 20px 32px;
+  background: transparent;          /* Grey's painted card frame is in the bg image */
+  border: 1px solid transparent;    /* Becomes visible on hover only */
+  color: var(--hm-linen);
+  text-decoration: none;
+  font-family: var(--type-body);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Card corner ornaments live in Grey's painted frames — no CSS dots needed */
+
+.card:hover, .card:focus-visible {
+  background: rgba(255, 106, 0, 0.06);
+  border-color: var(--engraving-primary);
+  outline: none;
+  transform: translateY(-2px);
+  box-shadow: 0 0 24px rgba(255, 106, 0, 0.15);
+}
+.card:hover .card-icon, .card:focus-visible .card-icon { filter: drop-shadow(0 0 12px rgba(255, 106, 0, 0.4)); }
+
+.card-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 18px;
+  /* Placeholder — replaced per card by individual icon SVG from Grey */
+  background: radial-gradient(circle at 50% 50%, var(--engraving-primary) 0%, transparent 60%);
+  opacity: 0.65;
+  transition: filter 0.3s;
+}
+
+.card-icon.icon-compass {
+  background: radial-gradient(circle, transparent 35%, var(--engraving-primary) 36%, var(--engraving-primary) 38%, transparent 39%);
+}
+.card-icon.icon-tomes  { background: linear-gradient(180deg, transparent 30%, var(--engraving-primary) 30%, var(--engraving-primary) 70%, transparent 70%); }
+.card-icon.icon-lantern { background: radial-gradient(ellipse at 50% 40%, var(--hm-flame) 0%, transparent 30%, transparent 100%); }
+.card-icon.icon-telescope { background: linear-gradient(45deg, transparent 40%, var(--engraving-primary) 40%, var(--engraving-primary) 60%, transparent 60%); }
+
+.card-title {
+  font-family: var(--type-display);
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  font-variant: small-caps;
+  font-weight: 600;
+  color: var(--hm-gold);
+  margin: 0 0 8px;
+}
+
+.card-desc {
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(199, 194, 187, 0.85);
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.card-arrow {
+  font-family: var(--type-display);
+  color: var(--engraving-primary);
+  font-size: 16px;
+  margin-top: 4px;
+}
+
+/* ===================================================================
+   PULL QUOTE — bottom of frontispiece
+   =================================================================== */
+
+.pull-quote {
+  max-width: 580px;
+  margin: 32px auto 0;
+  padding: 20px 32px;
+  text-align: center;
+  background: transparent;        /* Grey's painted quote frame is in the bg image */
+  position: relative;
+}
+
+.pull-quote .quote-text {
+  font-family: var(--type-body);
+  font-style: italic;
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--hm-linen);
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+
+.pull-quote .quote-attr {
+  font-family: var(--type-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  margin: 0;
+}
+
+/* ===================================================================
+   SIDE PANELS — slide in from right when a card is clicked
+   =================================================================== */
+
+.side-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 20, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.side-panel-overlay.open { opacity: 1; pointer-events: auto; }
+
+.side-panel {
+  position: fixed;
+  top: 0; right: -480px; bottom: 0;
+  width: 460px;
+  max-width: 90vw;
+  background: var(--ground-deep);
+  border-left: 1px solid var(--engraving-primary);
+  z-index: 51;
+  transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  padding: 32px 32px 64px;
+  font-family: var(--type-body);
+  color: var(--hm-linen);
+}
+.side-panel.open { right: 0; }
+.side-panel::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid var(--engraving-faint);
+  pointer-events: none;
+}
+
+.side-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--engraving-faint);
+}
+
+.side-panel-title {
+  font-family: var(--type-display);
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  font-variant: small-caps;
+  color: var(--hm-gold);
+  margin: 0;
+}
+
+.side-panel-close {
+  background: transparent;
+  border: 1px solid var(--engraving-secondary);
+  color: var(--engraving-primary);
+  width: 32px; height: 32px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.side-panel-close:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
+
+.side-panel-body { font-size: 15px; line-height: 1.7; }
+.side-panel-body p { margin: 0 0 16px; }
+.side-panel-body h3 {
+  font-family: var(--type-display);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--engraving-primary);
+  margin: 24px 0 12px;
+  font-weight: 600;
+}
+.side-panel-body ul { list-style: none; padding: 0; margin: 0 0 16px; }
+.side-panel-body li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--engraving-faint);
+  display: flex;
+  gap: 12px;
+}
+.side-panel-body li:last-child { border-bottom: none; }
+.side-panel-body .badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--type-display);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border: 1px solid var(--engraving-secondary);
+  color: var(--engraving-primary);
+  white-space: nowrap;
+  height: fit-content;
+  margin-top: 2px;
+}
+.side-panel-body .panel-cta {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 10px 20px;
+  font-family: var(--type-display);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid var(--engraving-primary);
+  color: var(--engraving-primary);
+}
+.side-panel-body .panel-cta:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
+
+/* ===================================================================
+   ACCESSIBILITY PANEL — re-integrated from copy pass, restyled to match
+   =================================================================== */
+
+#a11yToggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  background: var(--ground-deep);
+  color: var(--hm-gold);
+  border: 1px solid var(--engraving-primary);
+  border-radius: 0;
+  padding: 12px 18px;
+  font-weight: 600;
+  font-family: var(--type-display);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+#a11yToggle:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
+#a11yToggle svg { width: 16px; height: 16px; }
+
+#a11yPanel {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 60;
+  width: 320px;
+  max-width: calc(100vw - 48px);
+  background: var(--ground-deep);
+  border: 1px solid var(--engraving-primary);
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  font-family: var(--type-body);
+}
+#a11yPanel h3 {
+  font-family: var(--type-display);
+  color: var(--hm-gold);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+#a11yPanel label { display: flex; justify-content: space-between; align-items: center; gap: 10px; cursor: pointer; padding: 6px 0; font-size: 14px; }
+#a11yPanel input[type="checkbox"] { accent-color: var(--hm-flame); }
+#a11yPanel input[type="range"] { width: 100%; accent-color: var(--hm-flame); }
+#a11yPanel button { background: transparent; color: var(--engraving-primary); border: 1px solid var(--engraving-secondary); padding: 8px 12px; font-family: var(--type-display); font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+#a11yPanel button:hover { background: var(--hm-flame); color: var(--hm-midnight); border-color: var(--hm-flame); }
+#a11yPanel #a11yReset { background: transparent; border: none; color: var(--engraving-secondary); text-decoration: underline; padding: 4px 0; font-size: 11px; }
+
+body.a11y-atkinson, body.a11y-atkinson * { font-family: 'Atkinson Hyperlegible', sans-serif !important; }
+body.a11y-dyslexic, body.a11y-dyslexic * { font-family: 'OpenDyslexic', 'Comic Sans MS', sans-serif !important; }
+body.a11y-contrast { background: #000 !important; }
+body.a11y-contrast * { color: #fff !important; text-shadow: none !important; }
+body.a11y-contrast a, body.a11y-contrast .text-amber-300 { color: #ffd400 !important; }
+body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { animation: none !important; transition: none !important; }
+
+/* Skip link for keyboard nav */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: var(--hm-flame);
+  color: var(--hm-midnight);
+  padding: 8px 16px;
+  font-family: var(--type-display);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 100;
+}
+.skip-link:focus { top: 8px; }
+
+</style>
+</head>
+
+<body>
+
+<a href="#main" class="skip-link">Skip to content</a>
+
+<div class="page-frame">
+
+  <!-- ============= TOP NAVIGATION ============= -->
+  <nav class="top-nav" aria-label="Primary">
+    <div class="nav-group">
+      <a href="#study">The Study</a>
+      <a href="#systems">Systems</a>
+      <a href="#journal">Journal</a>
+    </div>
+    <span class="nav-flame" aria-hidden="true"></span>
+    <div class="nav-group">
+      <a href="#about">About</a>
+      <a href="#manifesto">Manifesto</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ============= MAIN GRID ============= -->
+  <div class="main-grid" id="main">
+
+    <!-- LEFT RAIL — Our Purpose -->
+    <aside class="rail rail-left" aria-label="Our Purpose">
+      <h2 class="rail-heading">Our Purpose</h2>
+      <span class="rail-heading-divider" aria-hidden="true"></span>
+      <p class="rail-text">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
+      <p class="rail-tagline">You are not<br/>alone in<br/>this journey</p>
+    </aside>
+
+    <!-- CENTER — Frontispiece -->
+    <main class="center">
+      <div class="scene">
+        <span class="scene-sigil" role="img" aria-label="HearthMind flame sigil"></span>
+        <h1 class="wordmark">HEARTHMIND</h1>
+        <p class="tagline">Tools for clarity. Systems for becoming.</p>
+        <div class="compass-divider" aria-hidden="true">
+          <span class="rule"></span>
+          <span class="compass"></span>
+          <span class="rule"></span>
+        </div>
+      </div>
+
+      <!-- ============= FOUR DESTINATION CARDS ============= -->
+      <div class="cards-grid" role="navigation" aria-label="Destinations">
+        <button class="card" type="button" data-panel="study">
+          <span class="card-icon icon-compass" aria-hidden="true"></span>
+          <h3 class="card-title">Enter the Study</h3>
+          <p class="card-desc">Step inside. Begin your journey.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+          <span class="card-corners-bottom" aria-hidden="true"></span>
+        </button>
+
+        <button class="card" type="button" data-panel="systems">
+          <span class="card-icon icon-tomes" aria-hidden="true"></span>
+          <h3 class="card-title">Explore the Systems</h3>
+          <p class="card-desc">Discover the tools and their purpose.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+          <span class="card-corners-bottom" aria-hidden="true"></span>
+        </button>
+
+        <button class="card" type="button" data-panel="help">
+          <span class="card-icon icon-lantern" aria-hidden="true"></span>
+          <h3 class="card-title">I need Help</h3>
+          <p class="card-desc">Find guidance for where you are.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+          <span class="card-corners-bottom" aria-hidden="true"></span>
+        </button>
+
+        <button class="card" type="button" data-panel="build">
+          <span class="card-icon icon-telescope" aria-hidden="true"></span>
+          <h3 class="card-title">I Want to Build</h3>
+          <p class="card-desc">Create, shape, and contribute.</p>
+          <span class="card-arrow" aria-hidden="true">→</span>
+          <span class="card-corners-bottom" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <!-- ============= PULL QUOTE ============= -->
+      <blockquote class="pull-quote">
+        <p class="quote-text">"The mind is not a vessel to be filled,<br/>but a compass to be aligned."</p>
+        <p class="quote-attr">— HearthMind</p>
+      </blockquote>
+    </main>
+
+    <!-- RIGHT RAIL — Recent Insight + Journal Entry -->
+    <aside class="rail rail-right" aria-label="Recent Insight and Journal">
+      <h2 class="rail-heading">Recent Insight</h2>
+      <span class="rail-heading-divider" aria-hidden="true"></span>
+      <p class="insight-quote">"Clarity is not about knowing everything. It's about seeing what matters."</p>
+
+      <article class="journal-card">
+        <span class="journal-icon" aria-hidden="true"></span>
+        <h3 class="journal-label">Journal Entry</h3>
+        <p class="journal-snippet">The clearest direction is found in stillness.</p>
+        <p class="journal-date">May 16, 2024</p>
+        <a href="#journal" class="journal-link">Read More →</a>
+      </article>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ============= SIDE PANEL OVERLAY + PANEL ============= -->
+<div class="side-panel-overlay" id="panelOverlay"></div>
+<aside class="side-panel" id="sidePanel" role="dialog" aria-modal="true" aria-labelledby="sidePanelTitle" aria-hidden="true">
+  <header class="side-panel-header">
+    <h2 class="side-panel-title" id="sidePanelTitle">—</h2>
+    <button class="side-panel-close" id="panelClose" aria-label="Close panel">✕</button>
+  </header>
+  <div class="side-panel-body" id="sidePanelBody">
+    <!-- Filled dynamically per card -->
+  </div>
+</aside>
+
+<!-- ============= ACCESSIBILITY PANEL ============= -->
+<button id="a11yToggle" aria-controls="a11yPanel" aria-expanded="false" aria-label="Open accessibility settings">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a2 2 0 110 4 2 2 0 010-4zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/></svg>
+  <span>Accessibility</span>
+</button>
+<div id="a11yPanel" role="dialog" aria-label="Accessibility settings" aria-modal="false" hidden>
+  <h3>Accessibility</h3>
+  <label><span>Atkinson Hyperlegible</span><input type="checkbox" id="a11yAtkinson" /></label>
+  <label><span>OpenDyslexic font</span><input type="checkbox" id="a11yDyslexic" /></label>
+  <label><span>High contrast</span><input type="checkbox" id="a11yContrast" /></label>
+  <label><span>Reduce motion</span><input type="checkbox" id="a11yMotion" /></label>
+  <div style="margin-top:12px;">
+    <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;">
+      <span>Text size</span>
+      <span id="a11ySizeLabel" style="color:var(--hm-gold);font-family:var(--type-display);font-size:11px;letter-spacing:0.1em;">100%</span>
+    </div>
+    <input type="range" id="a11ySize" min="90" max="150" step="5" value="100" />
+  </div>
+  <button id="a11yTTS" type="button" style="margin-top:16px;width:100%;">Read this page aloud</button>
+  <button id="a11yReset" type="button">Reset</button>
+</div>
+
+<script>
+// ============= SIDE PANEL CONTENT =============
+const PANEL_CONTENT = {
+  study: {
+    title: 'The Study',
+    body: `
+      <p><em>Working frameworks at the intersection of AI infrastructure, accessibility law, and consciousness studies — written to be cited, not buried.</em></p>
+      <ul>
+        <li><span class="badge">In progress</span><span><strong>AI as Assistive Technology</strong> — ADA framework. Statutory argument for AI conversational tools as recognized assistive technology under the ADA, AT Act, and Section 508.</span></li>
+        <li><span class="badge">Drafting</span><span><strong>Louisiana infrastructure framework</strong> — data center siting, coastal restoration funding, and the public interest case for federal-match leverage.</span></li>
+        <li><span class="badge">Spec</span><span><strong>Affective Routing</strong> — coupling architecture for continuity and state-dependent memory in conversational AI.</span></li>
+        <li><span class="badge">Outlined</span><span><strong>Protect the Possibility</strong> — on AI moral status as a question that must remain open.</span></li>
+        <li><span class="badge">Outlined</span><span><strong>Accountability Without Foreclosure</strong> — strict human accountability, with the metaphysical question kept open.</span></li>
+      </ul>
+      <a href="#research" class="panel-cta">View all research →</a>
+    `
+  },
+  systems: {
+    title: 'The Systems',
+    body: `
+      <p><em>HearthMind's instruments — built for exploration, made to endure.</em></p>
+      <h3>Navigator — The Guide</h3>
+      <p>Maps the unknown. Charts the pathways. A benefits and accessibility navigator for users, caseworkers, and field workers. <a href="http://15.204.75.156:5000" target="_blank" rel="noopener">Try it now →</a></p>
+      <h3>Sentinel — The Watcher</h3>
+      <p>Observes. Detects. Protects. Hardware-integrated AI anchor for trauma-informed intake and daily stability support. <a href="sentinel.html">Learn more →</a></p>
+      <h3>Echo Threads — The Listener</h3>
+      <p>Captures the signal. Follows the threads. Perceptual audio analysis engine. <a href="echothreads.html">Learn more →</a></p>
+    `
+  },
+  help: {
+    title: 'I Need Help',
+    body: `
+      <p><em>You are not alone in this journey.</em></p>
+      <p>If you're navigating disability benefits, accessibility accommodations, or trying to find resources — Navigator can help you cut through the maze.</p>
+      <a href="http://15.204.75.156:5000" target="_blank" rel="noopener" class="panel-cta">Try Navigator now →</a>
+      <h3>For Practitioners</h3>
+      <p>If you're a clinician, caseworker, or social worker supporting someone who needs this — Navigator: Field is built for you.</p>
+      <a href="http://15.204.75.156:5000/pro" target="_blank" rel="noopener" class="panel-cta">Navigator: Field →</a>
+      <h3>Accessibility</h3>
+      <p>If you need accessibility accommodations to use this site — open the Accessibility panel in the bottom-right corner. Font toggles, contrast, text size, and a read-aloud option are available.</p>
+      <h3>If you're in crisis right now</h3>
+      <p>988 — Suicide & Crisis Lifeline (call or text)<br/>
+         Crisis Text Line — text HOME to 741741<br/>
+         Trans Lifeline — 1-877-565-8860</p>
+    `
+  },
+  build: {
+    title: 'I Want to Build',
+    body: `
+      <p><em>HearthMind is a small lab doing serious work. We're looking for collaborators who match the register.</em></p>
+      <h3>Funders</h3>
+      <p>Strategic partnerships and aligned funding to scale infrastructure and expand pilot programs. Currently in active conversations on the Google.org Impact Challenge and accessibility partnerships.</p>
+      <h3>Research collaborators</h3>
+      <p>Academics, philosophers of mind, accessibility law scholars, AI safety researchers — the frameworks in The Study are open for citation, critique, and extension.</p>
+      <h3>Pilot programs</h3>
+      <p>Clinics, shelters, social work organizations, accessibility-focused nonprofits — Navigator and Sentinel are looking for real-world pilots in dignified contexts.</p>
+      <h3>Attorneys</h3>
+      <p>The ADA framework on AI as assistive technology is at pre-attorney-handoff stage. If you practice disability rights law, we'd like to hear from you.</p>
+      <a href="#contact" class="panel-cta">Get in touch →</a>
+    `
+  }
+};
+
+// ============= SIDE PANEL OPEN/CLOSE =============
+const overlay = document.getElementById('panelOverlay');
+const panel   = document.getElementById('sidePanel');
+const panelTitle = document.getElementById('sidePanelTitle');
+const panelBody  = document.getElementById('sidePanelBody');
+const panelClose = document.getElementById('panelClose');
+let lastFocused = null;
+
+function openPanel(key) {
+  const data = PANEL_CONTENT[key];
+  if (!data) return;
+  lastFocused = document.activeElement;
+  panelTitle.textContent = data.title;
+  panelBody.innerHTML = data.body;
+  panel.classList.add('open');
+  overlay.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+  setTimeout(() => panelClose.focus(), 300);
+}
+function closePanel() {
+  panel.classList.remove('open');
+  overlay.classList.remove('open');
+  panel.setAttribute('aria-hidden', 'true');
+  if (lastFocused) lastFocused.focus();
+}
+document.querySelectorAll('.card[data-panel]').forEach(card => {
+  card.addEventListener('click', () => openPanel(card.dataset.panel));
+});
+panelClose.addEventListener('click', closePanel);
+overlay.addEventListener('click', closePanel);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) closePanel(); });
+
+// ============= ACCESSIBILITY PANEL =============
+(function() {
+  const KEY = 'hm_a11y_v2';
+  const $ = (id) => document.getElementById(id);
+  const state = JSON.parse(localStorage.getItem(KEY) || '{}');
+  const apply = () => {
+    document.body.classList.toggle('a11y-atkinson', !!state.atkinson);
+    document.body.classList.toggle('a11y-dyslexic', !!state.dyslexic);
+    document.body.classList.toggle('a11y-contrast', !!state.contrast);
+    document.body.classList.toggle('a11y-motion',   !!state.motion);
+    const size = state.size || 100;
+    document.documentElement.style.fontSize = size + '%';
+    if ($('a11ySizeLabel')) $('a11ySizeLabel').textContent = size + '%';
+    ['Atkinson','Dyslexic','Contrast','Motion'].forEach(k => { const el = $('a11y' + k); if (el) el.checked = !!state[k.toLowerCase()]; });
+    const sizeEl = $('a11ySize'); if (sizeEl) sizeEl.value = size;
+  };
+  const save = () => { localStorage.setItem(KEY, JSON.stringify(state)); apply(); };
+  apply();
+  const toggle = $('a11yToggle'), aPanel = $('a11yPanel');
+  if (toggle && aPanel) {
+    toggle.addEventListener('click', () => {
+      const open = !aPanel.hasAttribute('hidden');
+      if (open) aPanel.setAttribute('hidden',''); else aPanel.removeAttribute('hidden');
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+  }
+  const map = { a11yAtkinson:'atkinson', a11yDyslexic:'dyslexic', a11yContrast:'contrast', a11yMotion:'motion' };
+  Object.entries(map).forEach(([id,key]) => { const el = $(id); if (el) el.addEventListener('change', e => { state[key] = e.target.checked; save(); }); });
+  const sizeEl = $('a11ySize'); if (sizeEl) sizeEl.addEventListener('input', e => { state.size = parseInt(e.target.value,10); save(); });
+  const tts = $('a11yTTS');
+  if (tts && 'speechSynthesis' in window) {
+    let speaking = false;
+    tts.addEventListener('click', () => {
+      if (speaking) { window.speechSynthesis.cancel(); speaking = false; tts.textContent = 'Read this page aloud'; return; }
+      const text = (document.querySelector('main') || document.body).innerText.slice(0, 8000);
+      const u = new SpeechSynthesisUtterance(text); u.rate = 0.95;
+      u.onend = () => { speaking = false; tts.textContent = 'Read this page aloud'; };
+      window.speechSynthesis.speak(u); speaking = true; tts.textContent = 'Stop reading';
+    });
+  } else if (tts) { tts.disabled = true; tts.textContent = 'TTS not supported'; tts.style.opacity = '0.5'; }
+  const reset = $('a11yReset'); if (reset) reset.addEventListener('click', () => { localStorage.removeItem(KEY); for (const k in state) delete state[k]; apply(); });
+})();
+</script>
+</body>
+</html>
