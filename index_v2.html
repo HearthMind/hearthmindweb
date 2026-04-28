@@ -54,30 +54,92 @@ body {
   line-height: 1.6;
   min-height: 100vh;
 }
-/* Frontispiece image sits as a top-pinned, full-width element so nothing crops.
-   Aspect ratio = 1535 / 1024 ≈ 1.499 (we round to 3:2 for the box).
-   Width = 100vw, height = auto, page extends naturally. */
+
+/* ===================================================================
+   FRONTISPIECE — image + anchored content sharing one coordinate system.
+   Image is 1535×1024 (3:2). Content is positioned by percentage inside
+   this wrapper, so it scales perfectly with the image at every viewport.
+   =================================================================== */
+.frontispiece {
+  position: relative;
+  width: 100%;
+  max-width: 1600px;          /* don't blow up beyond image's natural res */
+  margin: 0 auto;
+  /* Aspect ratio locks the wrapper to match the image's ratio */
+  aspect-ratio: 1535 / 1024;
+}
 .frontispiece-bg {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
-  z-index: 0;
+  height: 100%;
+  object-fit: contain;
   display: block;
   pointer-events: none;
   user-select: none;
+  z-index: 0;
 }
-/* Soft veil for legibility over the painted scene */
 .frontispiece-veil {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
+  inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(13,19,33,0.05) 0%, rgba(13,19,33,0.20) 60%, rgba(13,19,33,0.40) 100%);
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(13,19,33,0.04) 0%, rgba(13,19,33,0.10) 50%, rgba(13,19,33,0.25) 100%);
 }
-.page-frame { position: relative; z-index: 2; }
+
+/* Anchored content overlays — these sit on TOP of the painted scene
+   at the exact percentages where the painted frames live. */
+.fp-anchor {
+  position: absolute;
+  z-index: 3;
+}
+
+/* WORDMARK — sits in the upper-middle of the scene, above the painted clouds */
+.fp-wordmark {
+  left: 50%;
+  top: 28%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 90%;
+}
+
+/* TAGLINE — just below the wordmark */
+.fp-tagline {
+  left: 50%;
+  top: 41%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 80%;
+}
+
+/* CARDS — anchored to the four painted card frames.
+   Measured from the image: cards span roughly x=15.5%..80%, y=53%..75%.
+   Each card is ~16% wide, separated by thin gold dividers. */
+.fp-cards {
+  left: 16%;
+  right: 20%;
+  top: 55%;
+  bottom: 25%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+/* PULL QUOTE — anchored to the painted quote frame at the bottom-center */
+.fp-quote {
+  left: 50%;
+  top: 86%;
+  transform: translate(-50%, -50%);
+  width: 38%;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  /* On narrow viewports, the painted frame shrinks too much — content overflow risk.
+     Hide the frontispiece anchored content and use a fallback stacked layout below. */
+  .fp-anchor { display: none; }
+  .frontispiece { aspect-ratio: 1535 / 1024; }
+}
 
 h1, h2, h3, h4, h5, h6, .display { font-family: var(--type-display); letter-spacing: 0.04em; font-weight: 500; }
 
@@ -118,15 +180,22 @@ button { font-family: inherit; cursor: pointer; }
    =================================================================== */
 
 .top-nav {
+  position: relative;
+  z-index: 5;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 24px 32px;
+  padding: 24px 64px 12px;
   font-family: var(--type-display);
   font-size: 13px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--engraving-primary);
+  max-width: 1600px;
+  margin: 0 auto;
+}
+@media (max-width: 768px) {
+  .top-nav { padding: 16px 24px 8px; }
 }
 .top-nav .nav-group { display: flex; gap: 48px; }
 .top-nav a {
@@ -649,6 +718,95 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 }
 .skip-link:focus { top: 8px; }
 
+/* ===================================================================
+   ANCHORED CONTENT — tuned to look good at viewport-scaled sizes
+   =================================================================== */
+.fp-wordmark.wordmark {
+  font-size: clamp(28px, 5.5vw, 84px);
+  margin: 0;
+  /* drop shadow so wordmark reads cleanly over the cloudy painted sky */
+  text-shadow: 0 2px 18px rgba(13,19,33,0.85), 0 0 32px rgba(212, 160, 23, 0.12);
+}
+.fp-tagline.tagline {
+  font-size: clamp(11px, 1.4vw, 18px);
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(13,19,33,0.85);
+}
+
+.fp-cards .card {
+  /* Anchored cards size to fill their grid slot, content centers within */
+  background: transparent;
+  border: 1px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8% 6%;
+  min-height: 0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.fp-cards .card:hover, .fp-cards .card:focus-visible {
+  background: rgba(255, 106, 0, 0.06);
+  outline: none;
+  box-shadow: inset 0 0 24px rgba(255, 106, 0, 0.10);
+}
+.fp-cards .card-title {
+  font-family: var(--type-display);
+  font-size: clamp(11px, 1.1vw, 15px);
+  letter-spacing: 0.08em;
+  font-variant: small-caps;
+  font-weight: 600;
+  color: var(--hm-gold);
+  margin: 0 0 6px;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(13,19,33,0.9);
+}
+.fp-cards .card-desc {
+  font-size: clamp(9px, 0.85vw, 12px);
+  font-style: italic;
+  color: rgba(199, 194, 187, 0.92);
+  margin: 0 0 6px;
+  line-height: 1.4;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.9);
+}
+.fp-cards .card-arrow {
+  font-family: var(--type-display);
+  color: var(--engraving-primary);
+  font-size: clamp(10px, 1vw, 14px);
+  margin-top: 2px;
+}
+
+.fp-quote .quote-text {
+  font-size: clamp(9px, 1vw, 14px);
+  margin: 0 0 4px;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.9);
+}
+.fp-quote .quote-attr {
+  font-size: clamp(7px, 0.7vw, 10px);
+  letter-spacing: 0.2em;
+  margin: 0;
+  text-shadow: 0 2px 6px rgba(13,19,33,0.9);
+}
+
+/* ===================================================================
+   BELOW-FOLD — rails sit in dark margin below the frontispiece
+   =================================================================== */
+.below-fold {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  max-width: 1100px;
+  margin: 64px auto;
+  padding: 0 48px;
+}
+@media (max-width: 768px) {
+  .below-fold { grid-template-columns: 1fr; gap: 32px; padding: 0 24px; margin: 32px auto; }
+}
+.below-fold .rail { padding-top: 0; }
+.below-fold .rail-tagline { margin-top: 16px; padding-top: 12px; }
+
 </style>
 </head>
 
@@ -656,109 +814,79 @@ body.a11y-motion *, body.a11y-motion *::before, body.a11y-motion *::after { anim
 
 <a href="#main" class="skip-link">Skip to content</a>
 
-<img class="frontispiece-bg" id="frontispieceBg" src="assets/brand/hearthmind_frontispiece_scene.png" alt="" aria-hidden="true" />
-<div class="frontispiece-veil" id="frontispieceVeil" aria-hidden="true"></div>
-
-<div class="page-frame">
-
-  <!-- ============= TOP NAVIGATION ============= -->
-  <nav class="top-nav" aria-label="Primary">
-    <div class="nav-group">
-      <a href="#study">The Study</a>
-      <a href="#systems">Systems</a>
-      <a href="#journal">Journal</a>
-    </div>
-    <span class="nav-flame" aria-hidden="true"></span>
-    <div class="nav-group">
-      <a href="#about">About</a>
-      <a href="#manifesto">Manifesto</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <!-- ============= MAIN GRID ============= -->
-  <div class="main-grid" id="main">
-
-    <!-- LEFT RAIL — Our Purpose -->
-    <aside class="rail rail-left" aria-label="Our Purpose">
-      <h2 class="rail-heading">Our Purpose</h2>
-      <span class="rail-heading-divider" aria-hidden="true"></span>
-      <p class="rail-text">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
-      <p class="rail-tagline">You are not<br/>alone in<br/>this journey</p>
-    </aside>
-
-    <!-- CENTER — Frontispiece -->
-    <main class="center">
-      <div class="scene">
-        <span class="scene-sigil" role="img" aria-label="HearthMind flame sigil"></span>
-        <h1 class="wordmark">HEARTHMIND</h1>
-        <p class="tagline">Tools for clarity. Systems for becoming.</p>
-        <div class="compass-divider" aria-hidden="true">
-          <span class="rule"></span>
-          <span class="compass"></span>
-          <span class="rule"></span>
-        </div>
-      </div>
-
-      <!-- ============= FOUR DESTINATION CARDS ============= -->
-      <div class="cards-grid" role="navigation" aria-label="Destinations">
-        <button class="card" type="button" data-panel="study">
-          <span class="card-icon icon-compass" aria-hidden="true"></span>
-          <h3 class="card-title">Enter the Study</h3>
-          <p class="card-desc">Step inside. Begin your journey.</p>
-          <span class="card-arrow" aria-hidden="true">→</span>
-          <span class="card-corners-bottom" aria-hidden="true"></span>
-        </button>
-
-        <button class="card" type="button" data-panel="systems">
-          <span class="card-icon icon-tomes" aria-hidden="true"></span>
-          <h3 class="card-title">Explore the Systems</h3>
-          <p class="card-desc">Discover the tools and their purpose.</p>
-          <span class="card-arrow" aria-hidden="true">→</span>
-          <span class="card-corners-bottom" aria-hidden="true"></span>
-        </button>
-
-        <button class="card" type="button" data-panel="help">
-          <span class="card-icon icon-lantern" aria-hidden="true"></span>
-          <h3 class="card-title">I need Help</h3>
-          <p class="card-desc">Find guidance for where you are.</p>
-          <span class="card-arrow" aria-hidden="true">→</span>
-          <span class="card-corners-bottom" aria-hidden="true"></span>
-        </button>
-
-        <button class="card" type="button" data-panel="build">
-          <span class="card-icon icon-telescope" aria-hidden="true"></span>
-          <h3 class="card-title">I Want to Build</h3>
-          <p class="card-desc">Create, shape, and contribute.</p>
-          <span class="card-arrow" aria-hidden="true">→</span>
-          <span class="card-corners-bottom" aria-hidden="true"></span>
-        </button>
-      </div>
-
-      <!-- ============= PULL QUOTE ============= -->
-      <blockquote class="pull-quote">
-        <p class="quote-text">"The mind is not a vessel to be filled,<br/>but a compass to be aligned."</p>
-        <p class="quote-attr">— HearthMind</p>
-      </blockquote>
-    </main>
-
-    <!-- RIGHT RAIL — Recent Insight + Journal Entry -->
-    <aside class="rail rail-right" aria-label="Recent Insight and Journal">
-      <h2 class="rail-heading">Recent Insight</h2>
-      <span class="rail-heading-divider" aria-hidden="true"></span>
-      <p class="insight-quote">"Clarity is not about knowing everything. It's about seeing what matters."</p>
-
-      <article class="journal-card">
-        <span class="journal-icon" aria-hidden="true"></span>
-        <h3 class="journal-label">Journal Entry</h3>
-        <p class="journal-snippet">The clearest direction is found in stillness.</p>
-        <p class="journal-date">May 16, 2024</p>
-        <a href="#journal" class="journal-link">Read More →</a>
-      </article>
-    </aside>
-
+<!-- ============= TOP NAVIGATION ============= -->
+<nav class="top-nav" aria-label="Primary">
+  <div class="nav-group">
+    <a href="#study">The Study</a>
+    <a href="#systems">Systems</a>
+    <a href="#journal">Journal</a>
   </div>
+  <div class="nav-group">
+    <a href="#about">About</a>
+    <a href="#manifesto">Manifesto</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============= FRONTISPIECE — image + anchored content ============= -->
+<div class="frontispiece" id="main">
+  <img class="frontispiece-bg" src="assets/brand/hearthmind_frontispiece_scene.png" alt="" aria-hidden="true" />
+  <div class="frontispiece-veil" aria-hidden="true"></div>
+
+  <h1 class="fp-anchor fp-wordmark wordmark">HEARTHMIND</h1>
+  <p class="fp-anchor fp-tagline tagline">Tools for clarity. Systems for becoming.</p>
+
+  <div class="fp-anchor fp-cards" role="navigation" aria-label="Destinations">
+    <button class="card" type="button" data-panel="study">
+      <h3 class="card-title">Enter the Study</h3>
+      <p class="card-desc">Step inside. Begin your journey.</p>
+      <span class="card-arrow" aria-hidden="true">→</span>
+    </button>
+    <button class="card" type="button" data-panel="systems">
+      <h3 class="card-title">Explore the Systems</h3>
+      <p class="card-desc">Discover the tools and their purpose.</p>
+      <span class="card-arrow" aria-hidden="true">→</span>
+    </button>
+    <button class="card" type="button" data-panel="help">
+      <h3 class="card-title">I need Help</h3>
+      <p class="card-desc">Find guidance for where you are.</p>
+      <span class="card-arrow" aria-hidden="true">→</span>
+    </button>
+    <button class="card" type="button" data-panel="build">
+      <h3 class="card-title">I Want to Build</h3>
+      <p class="card-desc">Create, shape, and contribute.</p>
+      <span class="card-arrow" aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <blockquote class="fp-anchor fp-quote pull-quote">
+    <p class="quote-text">"The mind is not a vessel to be filled,<br/>but a compass to be aligned."</p>
+    <p class="quote-attr">— HearthMind</p>
+  </blockquote>
 </div>
+
+<!-- ============= BELOW THE FRONTISPIECE — rails sit in dark margin ============= -->
+<section class="below-fold">
+  <aside class="rail rail-left" aria-label="Our Purpose">
+    <h2 class="rail-heading">Our Purpose</h2>
+    <span class="rail-heading-divider" aria-hidden="true"></span>
+    <p class="rail-text">To help you find clarity, build systems that serve, and walk in alignment with what matters.</p>
+    <p class="rail-tagline">You are not alone in this journey</p>
+  </aside>
+
+  <aside class="rail rail-right" aria-label="Recent Insight and Journal">
+    <h2 class="rail-heading">Recent Insight</h2>
+    <span class="rail-heading-divider" aria-hidden="true"></span>
+    <p class="insight-quote">"Clarity is not about knowing everything. It's about seeing what matters."</p>
+
+    <article class="journal-card">
+      <h3 class="journal-label">Journal Entry</h3>
+      <p class="journal-snippet">The clearest direction is found in stillness.</p>
+      <p class="journal-date">May 16, 2024</p>
+      <a href="#journal" class="journal-link">Read More →</a>
+    </article>
+  </aside>
+</section>
 
 <!-- ============= SIDE PANEL OVERLAY + PANEL ============= -->
 <div class="side-panel-overlay" id="panelOverlay"></div>
