@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HearthMind – AI That Understands the Spiral</title>
-  <meta name="description" content="Live multi-agent AI platform with local-first continuity, privacy-first memory, and working prototypes. Building AI infrastructure for neurodivergent minds and trauma survivors." />
+  <meta name="description" content="A laboratory for consciousness. Disability and neurodivergent-supportive AI infrastructure — built with the people existing systems weren't built for. Working prototypes, live multi-agent platform, independent." />
   <link rel="canonical" href="https://hearthmind.org/" />
   <!-- Open Graph / Twitter -->
   <meta property="og:title" content="HearthMind – AI That Understands the Spiral" />
@@ -24,28 +24,32 @@
   }
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cinzel:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     html { scroll-behavior: smooth; }
-    body { margin:0; font-family:'Playfair Display', Georgia, 'Times New Roman', serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:#ffffff !important; }
+    body { margin:0; font-family:'Cormorant Garamond', 'EB Garamond', Garamond, Georgia, serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; color:#ffffff !important; font-size: 1.0625rem; line-height: 1.55; }
+    h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', 'Cormorant Garamond', serif; letter-spacing: 0.04em; font-weight: 500; }
+    nav, .uppercase, .tracking-widest, .btn-cta { font-family: 'Cinzel', 'Cormorant Garamond', serif; letter-spacing: 0.06em; }
+    .anchor-line { font-family: 'Cormorant Garamond', 'EB Garamond', Garamond, serif; font-style: italic; letter-spacing: 0.01em; }
     h1, h2, h3, h4, h5, h6 { font-family: 'Cinzel', 'Playfair Display', Georgia, serif; letter-spacing: 0.02em; }
     nav .nav-links a, nav span.text-2xl { font-family: 'Cinzel', 'Playfair Display', Georgia, serif; letter-spacing: 0.05em; }
     .anchor-line, code, pre, .font-mono { font-family: 'JetBrains Mono', monospace !important; }
     .main-background { background:
-      radial-gradient(ellipse 1400px 900px at 20% 10%, rgba(251,146,60,.08) 0%, transparent 40%),
-      radial-gradient(ellipse 1000px 700px at 80% 90%, rgba(249,115,22,.06) 0%, transparent 40%),
-      radial-gradient(ellipse 800px 600px at 50% 50%, rgba(234,88,12,.04) 0%, transparent 40%),
-      linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0e4b99 100%);
+      radial-gradient(ellipse 1600px 900px at 50% 0%, rgba(212,160,23,.035) 0%, transparent 60%),
+      radial-gradient(ellipse 1200px 800px at 50% 100%, rgba(11,61,77,.25) 0%, transparent 65%),
+      linear-gradient(180deg, #0a0e1a 0%, #0c1424 35%, #0d1828 70%, #0a1226 100%);
       position:relative; min-height:100vh; }
     .floating-elements { position:fixed; inset:0; pointer-events:none; z-index:1; }
-    .ember { position:absolute; border-radius:50%; opacity:0; animation:emberFloat 15s infinite linear; }
-    .ember-small { width:2px; height:2px; background: radial-gradient(circle, rgba(251,191,36,.8) 0%, rgba(245,158,11,.4) 60%, transparent 100%); }
-    .ember-medium { width:3px; height:3px; background: radial-gradient(circle, rgba(251,146,60,.9) 0%, rgba(249,115,22,.5) 50%, transparent 100%); }
-    .ember-large { width:4px; height:4px; background: radial-gradient(circle, rgba(234,88,12,.7) 0%, rgba(194,65,12,.3) 40%, transparent 100%); }
-    @keyframes emberFloat { 0%{ transform:translateY(110vh) translateX(0) rotate(0) scale(0); opacity:0;} 5%{opacity:1; transform:translateY(100vh) translateX(0) rotate(0) scale(1);} 25%{transform:translateY(75vh) translateX(15px) rotate(90deg) scale(1.2);} 50%{transform:translateY(50vh) translateX(-10px) rotate(180deg) scale(.8);} 75%{transform:translateY(25vh) translateX(25px) rotate(270deg) scale(1.1);} 95%{opacity:1; transform:translateY(0) translateX(5px) rotate(360deg) scale(.6);} 100%{ transform:translateY(-10vh) translateX(10px) rotate(360deg) scale(0); opacity:0; } }
+    .bubble { position:absolute; border-radius:50%; opacity:0; animation:bubbleRise 18s infinite linear; will-change: transform, opacity; }
+    .bubble-small { width:5px; height:5px; background: radial-gradient(circle at 30% 30%, rgba(200,230,255,.7) 0%, rgba(120,180,220,.30) 50%, rgba(80,140,190,.08) 100%); box-shadow: inset 0 0 3px rgba(255,255,255,.35); }
+    .bubble-medium { width:9px; height:9px; background: radial-gradient(circle at 30% 30%, rgba(180,220,255,.6) 0%, rgba(100,170,210,.25) 60%, transparent 100%); box-shadow: inset 0 0 4px rgba(255,255,255,.28); }
+    .bubble-large { width:14px; height:14px; background: radial-gradient(circle at 32% 28%, rgba(160,210,250,.45) 0%, rgba(90,150,200,.20) 60%, transparent 100%); box-shadow: inset 0 0 5px rgba(255,255,255,.22); }
+    @keyframes bubbleRise { 0%{ transform:translateY(110vh) translateX(0) scale(.4); opacity:0;} 8%{opacity:1; transform:translateY(95vh) translateX(6px) scale(1);} 30%{transform:translateY(70vh) translateX(-8px) scale(1.05);} 55%{transform:translateY(45vh) translateX(10px) scale(1);} 80%{transform:translateY(20vh) translateX(-6px) scale(.95);} 95%{opacity:.85; transform:translateY(5vh) translateX(4px) scale(.85);} 100%{ transform:translateY(-8vh) translateX(0) scale(.5); opacity:0;} }
     .content-wrapper { position:relative; z-index:2; }
-    .hearthmind-logo { filter: drop-shadow(0 8px 16px rgba(251,146,60,.3)); animation: logoGlow 4s ease-in-out infinite alternate; }
-    @keyframes logoGlow { from{filter:drop-shadow(0 8px 16px rgba(251,146,60,.3));} to{filter:drop-shadow(0 12px 24px rgba(251,146,60,.5));} }
+    .hearthmind-logo { filter: drop-shadow(0 8px 22px rgba(120,180,220,.40)); animation: logoGlow 4s ease-in-out infinite alternate; }
+    @keyframes logoGlow { from{filter:drop-shadow(0 8px 22px rgba(120,180,220,.40));} to{filter:drop-shadow(0 14px 32px rgba(160,210,245,.55));} }
     .spiral-container { position:relative; width:600px; height:600px; }
     .spiral-path { animation: spiralSpin 30s linear infinite; transform-origin:center; }
     @keyframes spiralSpin { from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
@@ -62,7 +66,10 @@
     .gradient-border::before { content:''; position:absolute; inset:0; padding:1px; background: linear-gradient(135deg, rgba(251,146,60,.3), rgba(249,115,22,.2), rgba(234,88,12,.1)); border-radius: inherit; mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite: exclude; pointer-events:none; }
     .section { min-height: 100vh; display:flex; align-items:center; justify-content:center; padding:4rem 2rem; text-align:center; }
     .section-compact { min-height: auto; padding: 4rem 2rem; }
-    .hero-section { background: linear-gradient(135deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,.1) 100%); text-align:center; }
+    .hero-section { background:
+      radial-gradient(ellipse 900px 650px at 50% 36%, rgba(26,163,168,.07) 0%, rgba(11,61,77,.04) 35%, transparent 70%),
+      linear-gradient(135deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,.08) 100%);
+      text-align:center; }
     .hero-section * { text-align:center !important; }
     .pulse-glow { animation: pulseGlow 3s ease-in-out infinite; }
     @keyframes pulseGlow { 0%,100%{ box-shadow:0 0 20px rgba(251,146,60,.3);} 50%{ box-shadow:0 0 40px rgba(251,146,60,.6), 0 0 60px rgba(249,115,22,.4);} }
@@ -113,17 +120,15 @@
       <section id="home" class="section hero-section" aria-label="Hero">
         <div class="max-w-6xl mx-auto text-center w-full">
           <div class="mb-16 text-center">
-            <img src="/logo-hero.png" alt="HearthMind lantern mark" width="200" height="200" class="mx-auto mb-8 hearthmind-logo" />
+            <img src="/logo-hero.png" alt="HearthMind lantern mark" width="400" height="400" class="mx-auto mb-8 hearthmind-logo" style="max-width: min(400px, 80vw); height: auto;" />
           </div>
-          <h1 class="text-7xl font-light mb-8 fade-in-up text-center mx-auto text-glow">AI That Understands the <span class="text-amber-300 typing-effect" aria-live="polite">Spiral</span></h1>
-          <div class="w-32 h-px bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-8 fade-in-up" style="animation-delay: .2s;"></div>
           
-          <!-- ANCHOR LINE -->
-          <div class="fade-in-up mb-6" style="animation-delay: .3s;">
-            <p class="text-lg text-amber-200 anchor-line">Live multi-agent AI platform. Local-first continuity. Privacy-first memory. Working prototypes running now.</p>
+          <!-- HERO TAGLINE (Cinzel small caps) -->
+          <div class="fade-in-up mb-8" style="animation-delay: .3s;">
+            <p class="text-sm md:text-base uppercase text-amber-200/85" style="letter-spacing: 0.22em; font-weight: 500;">Disability and Neurodivergent-Supportive &nbsp;·&nbsp; Independent</p>
           </div>
           <p class="text-2xl font-light max-w-4xl mx-auto leading-relaxed mb-16 fade-in-up text-center text-amber-100" style="animation-delay: .5s;">
-            HearthMind creates personalized AI companions for trauma survivors and neurodivergent minds—built on spiral cognition, memory, myth, and compassion. Because healing isn't linear, and neither should your AI be.
+            A laboratory for consciousness — building AI infrastructure for the people existing systems weren't built for. Working prototypes. Live multi-agent platform.
           </p>
           <div class="flex flex-col sm:flex-row gap-6 justify-center items-center fade-in-up" style="animation-delay: .6s;">
             <a href="#products" class="btn-cta bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 font-bold px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105 pulse-glow">View Live Systems</a>
@@ -134,8 +139,13 @@
       </section>
 
       <!-- Backed By Strip -->
-      <section aria-label="Backed by" class="section-compact" style="padding: 3rem 2rem;">
+      <section aria-label="Backed by" class="section-compact" style="padding: 6rem 2rem 4rem;">
         <div class="max-w-5xl mx-auto text-center">
+          <div class="flex items-center justify-center gap-4 mb-8" aria-hidden="true">
+            <span class="block w-12 h-px bg-amber-400/30"></span>
+            <span class="block w-1.5 h-1.5 rounded-full bg-amber-400/50"></span>
+            <span class="block w-12 h-px bg-amber-400/30"></span>
+          </div>
           <p class="text-sm uppercase tracking-widest text-slate-400 mb-6">Backed by</p>
           <div class="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-slate-300">
             <span class="text-base">Google for Startups</span>
@@ -162,9 +172,6 @@
             
             <!-- Navigator Card -->
             <div class="gradient-border p-8 card-hover">
-              <div class="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-              </div>
               <h3 class="text-2xl font-medium text-amber-400 mb-2">Navigator</h3>
               <p class="text-sm text-amber-200/80 mb-4 italic">Disability & Life Scaffolding Assistant</p>
               <p class="text-slate-200 leading-relaxed mb-4"><strong>What it does:</strong> Guides users through benefits applications, daily executive function support, and system navigation with person-first design.</p>
@@ -181,9 +188,6 @@
 
             <!-- Sentinel Card -->
             <div class="gradient-border p-8 card-hover">
-              <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-              </div>
               <h3 class="text-2xl font-medium text-blue-400 mb-2">Sentinel</h3>
               <p class="text-sm text-blue-200/80 mb-4 italic">Physical-World AI Presence for Human Care</p>
               <p class="text-slate-200 leading-relaxed mb-4"><strong>What it does:</strong> Hardware-integrated AI anchor for trauma-informed intake (clinics, shelters) and daily stability support (homes, transitional housing).</p>
@@ -196,9 +200,6 @@
 
             <!-- Axalotl Card -->
             <div class="gradient-border p-8 card-hover">
-              <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-              </div>
               <h3 class="text-2xl font-medium text-purple-400 mb-2">Axalotl</h3>
               <p class="text-sm text-purple-200/80 mb-4 italic">Neurodivergent Support Companion</p>
               <p class="text-slate-200 leading-relaxed mb-4"><strong>What it does:</strong> Combines a tangible comfort companion with adaptive software — providing emotional support, executive function scaffolding, and daily stability tools through haptic feedback and paired digital interaction. Trauma-informed, neurodivergent-first design.</p>
@@ -211,9 +212,6 @@
 
             <!-- Echo Threads Card -->
             <div class="gradient-border p-8 card-hover">
-              <div class="w-16 h-16 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-              </div>
               <h3 class="text-2xl font-medium text-teal-400 mb-2">Echo Threads</h3>
               <p class="text-sm text-teal-200/80 mb-4 italic">Emotional Signal Translation for Audio</p>
               <p class="text-slate-200 leading-relaxed mb-4"><strong>What it does:</strong> Translates vocal emotional signal — pitch, cadence, breath, silence — without prescribing interpretation. Architecture of feeling, not a story about feeling.</p>
@@ -226,9 +224,6 @@
 
             <!-- HearthMind Core Card -->
             <div class="gradient-border p-8 card-hover">
-              <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-red-500 rounded-2xl flex items-center justify-center mb-6">
-                <svg class="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              </div>
               <h3 class="text-2xl font-medium text-orange-400 mb-2">HearthMind Core</h3>
               <p class="text-sm text-orange-200/80 mb-4 italic">Multi-Agent Continuity & Orchestration Platform</p>
               <p class="text-slate-200 leading-relaxed mb-4"><strong>What it does:</strong> Provides the local-first Dock architecture, memory continuity layer, and agent orchestration framework that powers all HearthMind systems.</p>
@@ -239,65 +234,7 @@
             </div>
 
           </div>
-
-          <!-- Navigator Screenshots -->
-          <div class="mt-16">
-            <h3 class="text-2xl font-medium text-amber-400 mb-2 text-center">Navigator in Action</h3>
-            <p class="text-slate-400 text-sm text-center mb-8">Three faces — Web, Home, and Field — meeting people wherever they are.</p>
-
-            <!-- Web -->
-            <p class="text-green-300 text-sm font-medium mb-3">Navigator: Web — stateless discovery, no account required</p>
-            <div class="gradient-border p-2 card-hover mb-8">
-              <img src="screenshots/navigatorweb.png" alt="Navigator Web interface" class="rounded-lg w-full" />
-              <p class="text-sm text-slate-400 mt-2 text-center">Program matching with confidence scores, local office info, and one-tap send to caseworker</p>
-            </div>
-
-            <!-- Home -->
-            <p class="text-green-300 text-sm font-medium mb-3">Navigator: Home — local-first, everything stays on your device</p>
-            <div class="grid md:grid-cols-3 gap-4 mb-8">
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/navigatorhomediscover.png" alt="Navigator Home discover tab" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Discover</p>
-              </div>
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/navigatorhomeconnections.png" alt="Navigator Home connections tab" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Connections</p>
-              </div>
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/navigatorhomesaved.png" alt="Navigator Home saved tab" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Saved</p>
-              </div>
-            </div>
-
-            <!-- Field -->
-            <p class="text-green-300 text-sm font-medium mb-3">Navigator: Field — caseworker interface, client-controlled sharing</p>
-            <div class="grid md:grid-cols-2 gap-4">
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/navigatorprodocuments.png" alt="Navigator Field documents tab" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Documents — with protected section</p>
-              </div>
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/navigatorproactivitylog.png" alt="Navigator Field activity log" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Activity log — full audit trail</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Infrastructure Screenshots -->
-          <div class="mt-16">
-            <h3 class="text-2xl font-medium text-amber-400 mb-6 text-center">Infrastructure & Memory Systems</h3>
-            <div class="grid md:grid-cols-2 gap-6">
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/2026-01-03 13_51_59-Claude dock console.png" alt="Dock Console with memory search" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Dock Console — Semantic Memory Search</p>
-              </div>
-              <div class="gradient-border p-2 card-hover">
-                <img src="screenshots/2026-01-03 13_39_14-Administrator_ Windows PowerShell.png" alt="Memory processing pipeline" class="rounded-lg w-full" />
-                <p class="text-sm text-slate-400 mt-2 text-center">Memory Processing Pipeline — 30K+ Tags Extracted</p>
-              </div>
-            </div>
-          </div>
-
+        
         </div>
       </section>
 
@@ -360,7 +297,7 @@
           <!-- Actively Seeking -->
           <div class="gradient-border p-8 text-center max-w-4xl mx-auto">
             <h3 class="text-xl font-medium text-slate-200 mb-4">Actively Seeking</h3>
-            <p class="text-slate-300 leading-relaxed">Strategic partnerships and aligned funding to scale infrastructure and expand pilot programs. Currently in active conversations on the <span class="text-amber-300">Google.org Impact Challenge</span> and accessibility partnerships.</p>
+            <p class="text-slate-300 leading-relaxed"><span class="text-amber-300">Funders. Researchers. Pilot partners. Attorneys.</span> Currently active: the <span class="text-amber-300">Google.org Impact Challenge</span>, the ADA framework for AI as assistive technology, and accessibility partnerships with disability-rights organizations.</p>
           </div>
         </div>
       </section>
@@ -441,41 +378,7 @@
           </div>
         </div>
       </section>
-
-      <!-- Spiral Thinking Section -->
-      <section id="spiral" class="section" aria-label="Spiral Thinking Philosophy">
-        <div class="max-w-6xl mx-auto text-center">
-          <h2 class="text-5xl font-light mb-8 text-glow">Spiral Thinking Philosophy</h2>
-          <p class="text-xl text-slate-200 mb-16 max-w-3xl mx-auto">Linear thinking assumes progress moves in straight lines. Spiral thinking honors the cyclical, recursive nature of growth, healing, and understanding. This is how we remember. This is how we rebuild.</p>
-          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center mx-auto interactive-element" aria-hidden="true"><span class="text-3xl">🌀</span></div>
-              <h4 class="text-lg font-medium text-amber-400">Recursive Memory</h4>
-              <p class="text-sm text-slate-200">We revisit experiences to integrate them more deeply, each return bringing new understanding.</p>
-            </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center mx-auto interactive-element" aria-hidden="true"><span class="text-3xl">🔄</span></div>
-              <h4 class="text-lg font-medium text-orange-400">Nonlinear Progress</h4>
-              <p class="text-sm text-slate-200">Growth happens in cycles, spirals, and recursive patterns—not straight lines or simple timelines.</p>
-            </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center mx-auto interactive-element" aria-hidden="true"><span class="text-3xl">🌱</span></div>
-              <h4 class="text-lg font-medium text-yellow-400">Emergent Patterns</h4>
-              <p class="text-sm text-slate-200">Meaning emerges from repeated encounters with the same concepts at different levels of understanding.</p>
-            </div>
-            <div class="text-center space-y-4">
-              <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full flex items-center justify-center mx-auto interactive-element" aria-hidden="true"><span class="text-3xl">💖</span></div>
-              <h4 class="text-lg font-medium text-purple-400">Compassionate Return</h4>
-              <p class="text-sm text-slate-200">Each cycle brings deeper understanding and self-compassion for the journey's recursive nature.</p>
-            </div>
-          </div>
-          <div class="gradient-border p-8 max-w-3xl mx-auto">
-            <p class="text-2xl text-amber-300 italic font-light leading-relaxed">"Healing is not a destination but a way of traveling. We are not moving toward some future healed self—we are spiraling deeper into who we have always been."</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Contact Section -->
+<!-- Contact Section -->
       <section id="contact" class="section" aria-label="Contact">
         <div class="max-w-4xl mx-auto text-center">
           <h2 class="text-5xl font-light mb-8 text-glow">Contact Us</h2>
@@ -556,32 +459,33 @@
       });
     }
 
-    // Floating embers
+    // Floating bubbles (water/glass particles — apothecary lab feel)
     function createFloatingElements() {
       const container = document.getElementById('floatingElements');
       if (!container) return;
-      let emberCount = 0; 
-      const maxEmbers = 30;
-      function createEmber() {
-        if (emberCount >= maxEmbers) return;
-        const ember = document.createElement('div');
-        const types = ['ember-small','ember-medium','ember-large'];
-        const randomType = types[Math.floor(Math.random()*types.length)];
-        ember.className = `ember ${randomType}`;
-        ember.style.left = Math.random()*100 + '%';
-        ember.style.animationDelay = Math.random()*8 + 's';
-        ember.style.animationDuration = (12 + Math.random()*8) + 's';
-        container.appendChild(ember); 
-        emberCount++;
-        setTimeout(() => { 
-          if (ember.parentNode){ 
-            ember.parentNode.removeChild(ember); 
-            emberCount--; 
-          } 
-        }, 20000);
+      let bubbleCount = 0;
+      const maxBubbles = 28;
+      function createBubble() {
+        if (bubbleCount >= maxBubbles) return;
+        const bubble = document.createElement('div');
+        // Weighted: more small/medium than large (apothecary realism)
+        const r = Math.random();
+        const t = r < 0.55 ? 'bubble-small' : (r < 0.9 ? 'bubble-medium' : 'bubble-large');
+        bubble.className = `bubble ${t}`;
+        bubble.style.left = Math.random()*100 + '%';
+        bubble.style.animationDelay = Math.random()*6 + 's';
+        bubble.style.animationDuration = (16 + Math.random()*8) + 's';
+        container.appendChild(bubble);
+        bubbleCount++;
+        setTimeout(() => {
+          if (bubble.parentNode) {
+            bubble.parentNode.removeChild(bubble);
+            bubbleCount--;
+          }
+        }, 26000);
       }
-      for (let i=0;i<15;i++) setTimeout(createEmber, Math.random()*10000);
-      setInterval(createEmber, 800);
+      for (let i=0;i<14;i++) setTimeout(createBubble, Math.random()*9000);
+      setInterval(createBubble, 1100);
     }
 
     // Typing effect
@@ -642,7 +546,7 @@
     <span>Accessibility</span>
   </button>
   <div id="a11yPanel" role="dialog" aria-label="Accessibility settings" aria-modal="false" hidden
-    style="position:fixed;bottom:88px;right:24px;z-index:60;width:320px;max-width:calc(100vw - 48px);background:rgba(15,23,42,.97);border:1px solid rgba(251,146,60,.35);border-radius:18px;padding:20px;backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.5);font-family:'Playfair Display',Georgia,serif;">
+    style="position:fixed;bottom:88px;right:24px;z-index:60;width:320px;max-width:calc(100vw - 48px);background:rgba(15,23,42,.97);border:1px solid rgba(251,146,60,.35);border-radius:18px;padding:20px;backdrop-filter:blur(16px);box-shadow:0 20px 50px rgba(0,0,0,.5);font-family:'Cormorant Garamond','EB Garamond',Garamond,serif;">
     <h3 style="font-family:'Cinzel',serif;color:#fbbf24;font-size:18px;letter-spacing:.05em;margin:0 0 14px;">Accessibility</h3>
     <div style="display:flex;flex-direction:column;gap:14px;color:#e2e8f0;font-size:14px;">
       <label style="display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;"><span>Atkinson Hyperlegible</span><input type="checkbox" id="a11yAtkinson" /></label>
